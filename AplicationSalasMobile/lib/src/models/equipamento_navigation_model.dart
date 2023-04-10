@@ -1,4 +1,4 @@
-class EquipamentoNavigationResponseModel {
+class EquipamentoNavigationModel {
   final int id;
   final String modelo;
   final String marca;
@@ -7,7 +7,7 @@ class EquipamentoNavigationResponseModel {
   final String tipoEquipamento;
   final String hardwareDeSala;
 
-  EquipamentoNavigationResponseModel(
+  EquipamentoNavigationModel(
       {required this.id,
       required this.modelo,
       required this.marca,
@@ -16,8 +16,8 @@ class EquipamentoNavigationResponseModel {
       required this.tipoEquipamento,
       required this.hardwareDeSala});
 
-  factory EquipamentoNavigationResponseModel.fromJson(Map<String, dynamic> map) {
-    return EquipamentoNavigationResponseModel(
+  factory EquipamentoNavigationModel.fromJson(Map<String, dynamic> map) {
+    return EquipamentoNavigationModel(
       id: map['id'] ?? 0,
       modelo: map['modelo'] ?? '',
       marca: map['marca'] ?? '',
@@ -39,4 +39,14 @@ class EquipamentoNavigationResponseModel {
       'hardwareDeSala': hardwareDeSala
     };
   }
+
+  factory EquipamentoNavigationModel.empty() => EquipamentoNavigationModel(
+        id: 0,
+        modelo: '',
+        marca: '',
+        descricao: '',
+        sala: 0,
+        tipoEquipamento: '',
+        hardwareDeSala: '',
+      );
 }

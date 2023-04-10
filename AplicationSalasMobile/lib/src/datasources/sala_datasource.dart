@@ -1,10 +1,12 @@
-import 'package:aplicationsalasmobile/src/models/bloco_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/sala_response_model.dart';
+import 'package:aplicationsalasmobile/src/models/bloco_model.dart';
+import 'package:aplicationsalasmobile/src/models/sala_model.dart';
+import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
 import 'package:dio/dio.dart';
 
 abstract class ISalaDatasource {
-  Future<List<SalaResponseModel>> getSalas();
-  Future<List<BlocoResponseModel>> getBlocos();
+  Future<List<SalaModel>> getSalas();
+  Future<List<BlocoModel>> getBlocos();
+  Future<List<SalasUsuarioResponseModel>> salasUsuario(int idUsuario);
 }
 
 class SalaDataSourceImpl extends ISalaDatasource {
@@ -12,20 +14,32 @@ class SalaDataSourceImpl extends ISalaDatasource {
 
   SalaDataSourceImpl({required this.dio});
 
-  Future<List<SalaResponseModel>> getSalas() async {
+  Future<List<SalasUsuarioResponseModel>> salasUsuario(int idUsuario) async {
     try {
-      Response res = await dio.get("/Sala");
-      List<SalaResponseModel> lista = (res.data as List<dynamic>).map((e) => SalaResponseModel.fromJson(e)).toList();
+      Response res = await dio.get("/SalaParticular/getSalasExclusivasByUsuario/$idUsuario");
+      List<SalasUsuarioResponseModel> lista = (res.data["result"]["salasUsuario"] as List<dynamic>).map((e) {
+        return SalasUsuarioResponseModel.fromJson(e);
+      }).toList();
       return lista;
     } on DioError catch(e) {
       return [];
     }
   }
 
-  Future<List<BlocoResponseModel>> getBlocos() async {
+  Future<List<SalaModel>> getSalas() async {
+    try {
+      Response res = await dio.get("/Sala");
+      List<SalaModel> lista = (res.data as List<dynamic>).map((e) => SalaModel.fromJson(e)).toList();
+      return lista;
+    } on DioError catch(e) {
+      return [];
+    }
+  }
+
+  Future<List<BlocoModel>> getBlocos() async {
     try {
       Response res = await dio.get("/Bloco");
-      List<BlocoResponseModel> lista = (res.data['result'] as List<dynamic>).map((e) => BlocoResponseModel.fromJson(e)).toList();
+      List<BlocoModel> lista = (res.data['result'] as List<dynamic>).map((e) => BlocoModel.fromJson(e)).toList();
       return lista;
     } on DioError catch(e) {
       return [];
