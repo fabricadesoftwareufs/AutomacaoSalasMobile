@@ -1,4 +1,5 @@
 import 'package:aplicationsalasmobile/src/datasources/sala_datasource.dart';
+import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
 import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -15,4 +16,12 @@ class SalaProvider extends ChangeNotifier {
     final List<SalasUsuarioResponseModel> listaSalasUsuario = await salaDataSource.salasUsuario(idUsuario);
     return listaSalasUsuario;
   }
+
+  Future<String> putMonitorarSala(MonitorarSalaRequestModel monitoraSala, String token) async {
+    ISalaDatasource salaDataSource = SalaDataSourceImpl(dio: dio);
+
+    final String resultado = await salaDataSource.putMonitorarSala(monitoraSala, token);
+    return resultado;
+  }
+
 }

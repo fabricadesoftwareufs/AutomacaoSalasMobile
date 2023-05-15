@@ -1,12 +1,16 @@
 import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
 import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
+import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
 import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
+import 'package:aplicationsalasmobile/src/pages/Reservas/reservas_page.dart';
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final AuthResponseModel authResponseModel;
+  HomePage({Key? key, required this.authResponseModel}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     super.didChangeDependencies();
     if (!inicializado) {
       salaProvider = Provider.of<SalaProvider>(context, listen: false);
+
       inicializado = true;
     }
   }
@@ -93,19 +98,61 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           for (int i = 0; i < salasUsuario.length; i++)
                             Card(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                               child: Container(
-                                padding: EdgeInsets.all(8),
+                                padding: EdgeInsets.all(10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       children: [
-                                        Text(salasUsuario[i].salaModel.titulo, style: TextStyle(fontWeight: FontWeight.bold)),
-                                        Text(salasUsuario[i].blocoModel.titulo, style: TextStyle(fontWeight: FontWeight.bold))
+                                        Text(salasUsuario[i].salaModel.titulo, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                                        Text(salasUsuario[i].blocoModel.titulo, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
                                       ],
                                     ),
-                                    Switch(value: salasUsuario[i].monitoramentoLuzesModel.estado, onChanged: null),
-                                    Switch(value: salasUsuario[i].monitoramentoCondicionadoresModel.estado, onChanged: null),
+                                    Column(
+                                      children: [
+                                        const Text("Luzes", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),),
+                                        Switch(
+                                            value: salasUsuario[i].monitoramentoLuzesModel.estado,
+                                            activeColor: Colors.white,
+                                            activeTrackColor: Colors.green,
+                                            onChanged: (value) async {
+                                              MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel(id: salasUsuario[i].monitoramentoLuzesModel.id, equipamentoId: salasUsuario[i].monitoramentoLuzesModel.equipamentoId, estado: value, salaId: salasUsuario[i].salaModel.id, salaParticula: salasUsuario[i].monitoramentoLuzesModel.estado);
+                                              await salaProvider.putMonitorarSala(monitoraSala, widget.authResponseModel.token).then((value) => ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(content: Text(value, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),), backgroundColor: (value != "Monitoramento não pode ser realizado")?Colors.green:Colors.red,)));
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        const Text("Ar Condicionado", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),),
+                                        Switch(
+                                            value: salasUsuario[i].monitoramentoCondicionadoresModel.estado,
+                                            activeColor: Colors.white,
+                                            activeTrackColor: Colors.green,
+                                            splashRadius: 50.0,
+                                            onChanged: (value) async {
+                                              MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel(id: salasUsuario[i].monitoramentoCondicionadoresModel.id, equipamentoId: salasUsuario[i].monitoramentoCondicionadoresModel.equipamentoId, estado: value, salaId: salasUsuario[i].salaModel.id, salaParticula: salasUsuario[i].monitoramentoCondicionadoresModel.estado);
+                                              await salaProvider.putMonitorarSala(monitoraSala, widget.authResponseModel.token).then((value) {
+                                                return ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(
+                                                        content: Text(
+                                                          value, textAlign: TextAlign.center,
+                                                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                                                        ),
+                                                        backgroundColor: (value != "Monitoramento não pode ser realizado")?Colors.green:Colors.red));
+                                              });
+                                            },
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -116,6 +163,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+            if (tabAtual == 1)
+              ReservasPage(idUsuario: 17, salaProvider: salaProvider, authResponseModel: widget.authResponseModel)
           ],
         ),
       ),
