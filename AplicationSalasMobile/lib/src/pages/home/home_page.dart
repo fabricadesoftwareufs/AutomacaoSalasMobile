@@ -2,6 +2,7 @@ import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart
 import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
 import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
 import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
+import 'package:aplicationsalasmobile/src/pages/Reservas/menu_semanal.dart';
 import 'package:aplicationsalasmobile/src/pages/Reservas/reservas_page.dart';
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             if (tabAtual == 1)
-              ReservasPage(idUsuario: 17, salaProvider: salaProvider, authResponseModel: widget.authResponseModel)
+              Container(child: MenuSemanal(idUsuario: 17, salaProvider: salaProvider, authResponseModel: widget.authResponseModel))
           ],
         ),
       ),

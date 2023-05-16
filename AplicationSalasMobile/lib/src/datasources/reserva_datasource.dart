@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 
 abstract class IReservaDatasource {
   Future<List<ReservaUsuarioResponseModel>> getReservaUsuario(String diaSemana, int idUsuario);
+
+  Future<String> cancelarReserva(int idReserva);
 }
 
 class ReservaDataSourceImpl extends IReservaDatasource {
@@ -17,6 +19,17 @@ class ReservaDataSourceImpl extends IReservaDatasource {
       return lista;
     } on DioError catch (e) {
       return [];
+    }
+  }
+
+  Future<String> cancelarReserva(int idReserva) async {
+    try {
+      Response res = await dio.delete("/HorarioSala/cancelarReserva/$idReserva");
+      return res.data["message"];
+    } on DioError catch (e) {
+      if(e.response?.statusCode == 500)
+        return e.response?.data['message'];
+      return "";
     }
   }
 }

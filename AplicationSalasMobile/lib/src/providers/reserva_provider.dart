@@ -14,4 +14,11 @@ class ReservaProvider extends ChangeNotifier {
     final List<ReservaUsuarioResponseModel> listaReservasUsuario = await reservasDataSource.getReservaUsuario(diaSemana, idUsuario);
     return listaReservasUsuario;
   }
+
+  Future<String> cancelarReservaUsuario(int idReserva) async {
+    IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
+
+    String deletarReserva = await reservasDataSource.cancelarReserva(idReserva);
+    return deletarReserva;
+  }
 }

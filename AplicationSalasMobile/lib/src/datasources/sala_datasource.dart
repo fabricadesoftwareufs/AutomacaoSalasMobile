@@ -53,13 +53,15 @@ class SalaDataSourceImpl extends ISalaDatasource {
 
   Future<String> putMonitorarSala(MonitorarSalaRequestModel monitoraSala, String token) async {
     try {
-      // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3NlcmlhbG51bWJlciI6IjE3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjAxNTUzNzY4NTMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJNaWxlbmEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEwLzMxLzIwMDAgMTI6MDA6MDAgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBRE1JTiIsImV4cCI6MTY4MjA0Nzc5MywiaXNzIjoiU2FsYXNVZnNXZWJBcGkubmV0IiwiYXVkIjoiU2FsYXNVZnNXZWJBcGkubmV0In0.9Jecq2RwbKaUtVQvCGqXmXfQ7zOfJ2ylid_tUV1XlDs";
+      // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3NlcmlhbG51bWJlciI6IjE3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjAxNTUzNzY4NTMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJNaWxlbmEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEwLzMxLzIwMDAgMTI6MDA6MDAgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBRE1JTiIsImV4cCI6MTY4NDI2NDc2NiwiaXNzIjoiU2FsYXNVZnNXZWJBcGkubmV0IiwiYXVkIjoiU2FsYXNVZnNXZWJBcGkubmV0In0.9TEQl9uZd6A9fahPdGGjio2N0UuWUZ2gTh6wuh_G1hE";
       dio.options.headers["Authorization"] = "Bearer $token";
       Response res = await dio.put("/Monitoramento/MonitorarSala",
           data: monitoraSala.toJson(),
       );
       return res.data["message"];
     } on DioError catch (e) {
+      if(e.response?.statusCode == 500)
+        return e.response?.data['message'];
       return "Monitoramento não pode ser realizado!";
     }
   }
