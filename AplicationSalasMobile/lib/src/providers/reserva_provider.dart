@@ -5,20 +5,25 @@ import 'package:flutter/material.dart';
 
 class ReservaProvider extends ChangeNotifier {
   final Dio dio;
+  List<ReservaUsuarioResponseModel> listaReservasUsuario = [];
 
   ReservaProvider(this.dio);
 
-  Future<List<ReservaUsuarioResponseModel>> reservasUsuario(String diaSemana, int idUsuario) async {
+  Future<void> reservasUsuario(String diaSemana, int idUsuario) async {
     IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
-
-    final List<ReservaUsuarioResponseModel> listaReservasUsuario = await reservasDataSource.getReservaUsuario(diaSemana, idUsuario);
-    return listaReservasUsuario;
+    listaReservasUsuario = await reservasDataSource.getReservaUsuario(diaSemana, idUsuario);
+    notifyListeners();
   }
 
   Future<String> cancelarReservaUsuario(int idReserva) async {
+    print("IDRSERVA: $idReserva");
+
+    listaReservasUsuario.forEach((element) {element.toJson();});
     IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
 
-    String deletarReserva = await reservasDataSource.cancelarReserva(idReserva);
+    String deletarReserva = await reservasDataSource.cancelarReserva(idReserva, this);
+
+    notifyListeners();
     return deletarReserva;
   }
 }

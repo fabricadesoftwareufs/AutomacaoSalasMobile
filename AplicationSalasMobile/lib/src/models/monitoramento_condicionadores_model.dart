@@ -2,7 +2,7 @@ import 'package:aplicationsalasmobile/src/models/equipamento_navigation_model.da
 
 class MonitoramentoCondicionadoresModel {
   final int id;
-  final bool estado;
+  bool estado;
   final int equipamentoId;
   final bool salaParticular;
   final EquipamentoNavigationModel equipamentoNavigationModel;

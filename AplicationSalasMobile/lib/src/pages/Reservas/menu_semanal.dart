@@ -1,13 +1,10 @@
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
 import 'package:aplicationsalasmobile/src/pages/Reservas/reservas_page.dart';
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MenuSemanal extends StatefulWidget {
-  int idUsuario;
-  SalaProvider salaProvider;
-  AuthResponseModel authResponseModel;
-  MenuSemanal({Key? key, required this.idUsuario, required this.salaProvider, required this.authResponseModel}) : super(key: key);
+  const MenuSemanal({Key? key}) : super(key: key);
 
   @override
   State<MenuSemanal> createState() => _MenuSemanalState();
@@ -15,11 +12,18 @@ class MenuSemanal extends StatefulWidget {
 
 class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStateMixin {
   late TabController _nestedTabController;
+  late SalaProvider salaProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    salaProvider = Provider.of<SalaProvider>(context, listen: false);
+  }
 
   @override
   void initState() {
     super.initState();
-    _nestedTabController = new TabController(length: 7, vsync: this);
+    _nestedTabController = TabController(length: 7, vsync: this);
   }
 
   @override
@@ -27,17 +31,17 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
     super.dispose();
     _nestedTabController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     return Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           TabBar(
             controller: _nestedTabController,
-            indicatorColor: Colors.teal,
-            labelColor: Colors.teal,
+            indicatorColor: Colors.blue,
+            labelColor: Colors.blue,
             unselectedLabelColor: Colors.black54,
             isScrollable: true,
             tabs: const <Widget>[
@@ -64,19 +68,19 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
               ),
             ],
           ),
-          Container(
-            height: screenHeight * 0.70,
+          SizedBox(
+            height: screenHeight * 0.8,
             // margin: EdgeInsets.only(left: 16.0, right: 16.0),
             child: TabBarView(
               controller: _nestedTabController,
               children: <Widget>[
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'seg',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'ter',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'qua',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'qui',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'sex',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'sab',),
-                ReservasPage(idUsuario: widget.idUsuario, salaProvider: widget.salaProvider, authResponseModel: widget.authResponseModel, filtroDia: 'dom',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
+                ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
               ],
             ),
           )

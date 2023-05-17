@@ -22,7 +22,7 @@ class AuthDataSourceImpl extends IAuthDatasource{
       AuthResponseModel authResponseModel = AuthResponseModel.fromJson(res.data);
       //await setToken(authResponseModel);
       return authResponseModel;
-    } on DioError catch(e){
+    } on DioError {
       return AuthResponseModel.empty();
     }
 

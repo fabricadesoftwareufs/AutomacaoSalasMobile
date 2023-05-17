@@ -52,8 +52,8 @@ class AuthPage extends StatelessWidget {
                                   .login(authRequestModel)
                                   .then((value) {
                                 if (value != null) {
-                                  AuthLocalDatasource _authLocalDatasource = AuthLocalDatasource();
-                                  _authLocalDatasource.setCurrentUser(value);
+                                  AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+                                  authLocalDatasource.setCurrentUser(value);
                                   Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
                                 }
                               });

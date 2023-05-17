@@ -13,48 +13,47 @@ class ReservaUsuarioResponseModel {
   final BlocoModel bloco;
   final HorarioSalaModel horarioSala;
 
-  ReservaUsuarioResponseModel({ required this.sala, required this.salaExclusiva, required this.monitoramentoLuzes, required this.monitoramentoCondicionadores,
-    required this.bloco, required this.horarioSala });
+  ReservaUsuarioResponseModel(
+      {required this.sala,
+      required this.salaExclusiva,
+      required this.monitoramentoLuzes,
+      required this.monitoramentoCondicionadores,
+      required this.bloco,
+      required this.horarioSala});
 
   factory ReservaUsuarioResponseModel.fromJson(Map<String, dynamic> map) {
     return ReservaUsuarioResponseModel(
-      sala: map['sala'] != null
-          ? SalaModel.fromJson(map['sala'])
-          : SalaModel.empty(),
-      salaExclusiva: map['salaExclusiva'] != null
-        ? SalaExclusivaModel.fromJson(map['SalaExclusivaModel'])
-        : SalaExclusivaModel.empty(),
-      monitoramentoLuzes: map['monitoramentoLuzes'] != null
-        ? MonitoramentoLuzesModel.fromJson(map['monitoramentoLuzes'])
-        : MonitoramentoLuzesModel.empty(),
-      monitoramentoCondicionadores: map['monitoramentoCondicionadores'] != null
-        ? MonitoramentoCondicionadoresModel.fromJson(map['monitoramentoCondicionadores'])
-        : MonitoramentoCondicionadoresModel.empty(),
-      bloco: map['bloco'] != null
-        ? BlocoModel.fromJson(map['bloco'])
-        : BlocoModel.empty(),
-      horarioSala: map['horarioSala'] != null
-        ? HorarioSalaModel.fromJson(map['horarioSala'])
-        : HorarioSalaModel.empty()
-    );
+        sala: map['sala'] != null ? SalaModel.fromJson(map['sala']) : SalaModel.empty(),
+        salaExclusiva: map['salaExclusiva'] != null
+            ? SalaExclusivaModel.fromJson(map['SalaExclusivaModel'])
+            : SalaExclusivaModel.empty(),
+        monitoramentoLuzes: map['monitoramentoLuzes'] != null
+            ? MonitoramentoLuzesModel.fromJson(map['monitoramentoLuzes'])
+            : MonitoramentoLuzesModel.empty(),
+        monitoramentoCondicionadores: map['monitoramentoCondicionadores'] != null
+            ? MonitoramentoCondicionadoresModel.fromJson(map['monitoramentoCondicionadores'])
+            : MonitoramentoCondicionadoresModel.empty(),
+        bloco: map['bloco'] != null ? BlocoModel.fromJson(map['bloco']) : BlocoModel.empty(),
+        horarioSala:
+            map['horarioSala'] != null ? HorarioSalaModel.fromJson(map['horarioSala']) : HorarioSalaModel.empty());
   }
 
   Map<String, dynamic> toJson() {
     return {
-      if(sala != null)
-        'sala': sala.toJson(),
-      if(salaExclusiva != null)
-        'salaExclusiva': salaExclusiva,
-      if(monitoramentoLuzes != null)
-        'monitoramentoLuzes': monitoramentoLuzes.toJson(),
-      if(monitoramentoCondicionadores != null)
-        'monitoramentoCondicionadores': monitoramentoCondicionadores.toJson(),
-      if(bloco != null)
-        'bloco': bloco.toJson(),
-      if(horarioSala != null)
-        'horarioSala': horarioSala.toJson(),
+      'sala': sala.toJson(),
+      'salaExclusiva': salaExclusiva.toJson(),
+      'monitoramentoLuzes': monitoramentoLuzes.toJson(),
+      'monitoramentoCondicionadores': monitoramentoCondicionadores.toJson(),
+      'bloco': bloco.toJson(),
+      'horarioSala': horarioSala.toJson(),
     };
   }
 
-  factory ReservaUsuarioResponseModel.empty() => ReservaUsuarioResponseModel(sala: SalaModel.empty(), salaExclusiva: SalaExclusivaModel.empty(), monitoramentoLuzes: MonitoramentoLuzesModel.empty(), monitoramentoCondicionadores: MonitoramentoCondicionadoresModel.empty(), bloco: BlocoModel.empty(), horarioSala: HorarioSalaModel.empty());
+  factory ReservaUsuarioResponseModel.empty() => ReservaUsuarioResponseModel(
+      sala: SalaModel.empty(),
+      salaExclusiva: SalaExclusivaModel.empty(),
+      monitoramentoLuzes: MonitoramentoLuzesModel.empty(),
+      monitoramentoCondicionadores: MonitoramentoCondicionadoresModel.empty(),
+      bloco: BlocoModel.empty(),
+      horarioSala: HorarioSalaModel.empty());
 }

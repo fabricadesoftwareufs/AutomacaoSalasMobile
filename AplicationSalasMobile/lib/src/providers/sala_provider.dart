@@ -3,7 +3,6 @@ import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.da
 import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class SalaProvider extends ChangeNotifier {
   final Dio dio;

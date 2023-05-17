@@ -6,14 +6,14 @@ Widget buttonWidget({required String text}) {
       Expanded(
         child: TextButton(
           style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            shape: RoundedRectangleBorder(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            shape: const RoundedRectangleBorder(
               side: BorderSide(color: Colors.black),
               borderRadius: BorderRadius.all(Radius.circular(5))
             ),
           ),
           onPressed: () {},
-          child: Text(text, style: TextStyle(color: Colors.black))
+          child: Text(text, style: const TextStyle(color: Colors.black))
         ),
       ),
     ],

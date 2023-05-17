@@ -19,6 +19,7 @@ class SalaDataSourceImpl extends ISalaDatasource {
 
   SalaDataSourceImpl({required this.dio});
 
+  @override
   Future<List<SalasUsuarioResponseModel>> salasUsuario(int idUsuario) async {
     try {
       Response res = await dio.get("/SalaParticular/getSalasExclusivasByUsuario/$idUsuario");
@@ -26,42 +27,46 @@ class SalaDataSourceImpl extends ISalaDatasource {
         return SalasUsuarioResponseModel.fromJson(e);
       }).toList();
       return lista;
-    } on DioError catch (e) {
+    } on DioError {
       return [];
     }
   }
 
+  @override
   Future<List<SalaModel>> getSalas() async {
     try {
       Response res = await dio.get("/Sala");
       List<SalaModel> lista = (res.data as List<dynamic>).map((e) => SalaModel.fromJson(e)).toList();
       return lista;
-    } on DioError catch (e) {
+    } on DioError {
       return [];
     }
   }
 
+  @override
   Future<List<BlocoModel>> getBlocos() async {
     try {
       Response res = await dio.get("/Bloco");
       List<BlocoModel> lista = (res.data['result'] as List<dynamic>).map((e) => BlocoModel.fromJson(e)).toList();
       return lista;
-    } on DioError catch (e) {
+    } on DioError {
       return [];
     }
   }
 
+  @override
   Future<String> putMonitorarSala(MonitorarSalaRequestModel monitoraSala, String token) async {
     try {
-      // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3NlcmlhbG51bWJlciI6IjE3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjAxNTUzNzY4NTMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJNaWxlbmEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEwLzMxLzIwMDAgMTI6MDA6MDAgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBRE1JTiIsImV4cCI6MTY4NDI2NDc2NiwiaXNzIjoiU2FsYXNVZnNXZWJBcGkubmV0IiwiYXVkIjoiU2FsYXNVZnNXZWJBcGkubmV0In0.9TEQl9uZd6A9fahPdGGjio2N0UuWUZ2gTh6wuh_G1hE";
+      token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3NlcmlhbG51bWJlciI6IjE3IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjAxNTUzNzY4NTMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJNaWxlbmEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9kYXRlb2ZiaXJ0aCI6IjEwLzMxLzIwMDAgMTI6MDA6MDAgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBRE1JTiIsImV4cCI6MTY4NDM3NDI3MiwiaXNzIjoiU2FsYXNVZnNXZWJBcGkubmV0IiwiYXVkIjoiU2FsYXNVZnNXZWJBcGkubmV0In0.FF4Rntn7mSJfMJA6FrnpHZo81Oo12bQPotXp1CXI2wE";
       dio.options.headers["Authorization"] = "Bearer $token";
       Response res = await dio.put("/Monitoramento/MonitorarSala",
           data: monitoraSala.toJson(),
       );
       return res.data["message"];
     } on DioError catch (e) {
-      if(e.response?.statusCode == 500)
+      if(e.response?.statusCode == 500) {
         return e.response?.data['message'];
+      }
       return "Monitoramento não pode ser realizado!";
     }
   }

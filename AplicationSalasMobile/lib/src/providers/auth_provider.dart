@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:aplicationsalasmobile/src/datasources/auth_remote_datasource.dart';
 import 'package:aplicationsalasmobile/src/models/auth_request_model.dart';
 import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
