@@ -23,7 +23,7 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _nestedTabController = TabController(length: 7, vsync: this);
+    _nestedTabController = TabController(length: 7, vsync: this, initialIndex: DateTime.now().weekday-1);
   }
 
   @override
