@@ -35,56 +35,102 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          TabBar(
-            controller: _nestedTabController,
-            indicatorColor: Colors.blue,
-            labelColor: Colors.blue,
-            unselectedLabelColor: Colors.black54,
-            isScrollable: true,
-            tabs: const <Widget>[
-              Tab(
-                text: "SEG",
-              ),
-              Tab(
-                text: "TER",
-              ),
-              Tab(
-                text: "QUA",
-              ),
-              Tab(
-                text: "QUI",
-              ),
-              Tab(
-                text: "SEX",
-              ),
-              Tab(
-                text: "SÁB",
-              ),
-              Tab(
-                text: "DOM",
-              ),
-            ],
+    return Scaffold(
+      appBar: TabBar(
+        controller: _nestedTabController,
+        indicatorColor: Colors.blue,
+        labelColor: Colors.blue,
+        unselectedLabelColor: Colors.black54,
+        isScrollable: true,
+        tabs: const <Widget>[
+          Tab(
+            text: "SEG",
           ),
-          SizedBox(
-            height: screenHeight * 0.8,
-            // margin: EdgeInsets.only(left: 16.0, right: 16.0),
-            child: TabBarView(
-              controller: _nestedTabController,
-              children: <Widget>[
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
-                ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
-              ],
-            ),
-          )
+          Tab(
+            text: "TER",
+          ),
+          Tab(
+            text: "QUA",
+          ),
+          Tab(
+            text: "QUI",
+          ),
+          Tab(
+            text: "SEX",
+          ),
+          Tab(
+            text: "SÁB",
+          ),
+          Tab(
+            text: "DOM",
+          ),
         ],
+      ),
+      body: TabBarView(
+        controller: _nestedTabController,
+        children: <Widget>[
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
+          ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
+        ],
+      ),
+      // body: Column(
+      //   mainAxisSize: MainAxisSize.min,
+      //     children: <Widget>[
+      //       TabBar(
+      //         controller: _nestedTabController,
+      //         indicatorColor: Colors.blue,
+      //         labelColor: Colors.blue,
+      //         unselectedLabelColor: Colors.black54,
+      //         isScrollable: true,
+      //         tabs: const <Widget>[
+      //           Tab(
+      //             text: "SEG",
+      //           ),
+      //           Tab(
+      //             text: "TER",
+      //           ),
+      //           Tab(
+      //             text: "QUA",
+      //           ),
+      //           Tab(
+      //             text: "QUI",
+      //           ),
+      //           Tab(
+      //             text: "SEX",
+      //           ),
+      //           Tab(
+      //             text: "SÁB",
+      //           ),
+      //           Tab(
+      //             text: "DOM",
+      //           ),
+      //         ],
+      //       ),
+      //       SingleChildScrollView(
+      //         child: SizedBox(
+      //           height: screenHeight,
+      //           // margin: EdgeInsets.only(left: 16.0, right: 16.0),
+      //           child: TabBarView(
+      //             controller: _nestedTabController,
+      //             children: <Widget>[
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
+      //               ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
+      //             ],
+      //           ),
+      //         ),
+      //       )
+      //     ],
+      // ),
     );
   }
 }

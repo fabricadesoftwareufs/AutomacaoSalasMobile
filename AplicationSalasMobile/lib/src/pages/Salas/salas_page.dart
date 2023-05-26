@@ -35,49 +35,49 @@ class _SalasPageState extends State<SalasPage> {
   }
 
   Future<void> refreshSalas() async {
-    await verify();
+    await verify().then((value) => salaProvider!.salasUsuario(value!.id));
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      displacement: 200 ,
       color: Theme.of(context).colorScheme.secondary,
       onRefresh: ()async{
-        print("a");
+        setState(() {});
+        // refreshSalas();
       },
-      triggerMode: RefreshIndicatorTriggerMode.onEdge,
-      strokeWidth: 2,
-      child: FutureBuilder(
-        future: verify().then((value) => salaProvider!.salasUsuario(value!.id)),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
+      child: ListView(
+        children: [
+          FutureBuilder(
+            future: verify().then((value) {
+              return salaProvider!.salasUsuario(17);
+            }),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
 
-          List<SalasUsuarioResponseModel> salasUsuario = snapshot.data as List<SalasUsuarioResponseModel>;
+              List<SalasUsuarioResponseModel> salasUsuario = snapshot.data as List<SalasUsuarioResponseModel>;
 
-          return (salasUsuario.isEmpty)
-            ?Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Empty_Widget(titulo: 'Sem salas', descricao: 'Você ainda não tem salas cadastradas!'),
-              ],
-            )
-            :SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Column(
-                  children: [
-                    for (int i = 0; i < salasUsuario.length; i++)
-                      CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: token),
-                  ],
-                ),
-              ),
-            );
-        }
+              return (salasUsuario.isEmpty)
+                ?Empty_Widget(titulo: 'Sem salas', descricao: 'Você ainda não tem salas cadastradas!')
+                :SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < salasUsuario.length; i++)
+                        ...[
+                          CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: token),
+                        ]
+                      ],
+                    ),
+                  ),
+                );
+            }
+          ),
+        ]
       ),
     );
   }

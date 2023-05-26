@@ -15,12 +15,13 @@ import 'package:dotenv/dotenv.dart';
 
 
 void main() {
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => const MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           "/home": (_) => HomePage(authResponseModel: AuthResponseModel.empty()),
           "/login": (_) => const AuthPage(),
         },
-        home: const NavigationApp()//VerifyAuth(),
+        home: VerifyAuth(),
       ),
     );
   }
@@ -69,7 +70,7 @@ class VerifyAuth extends StatelessWidget {
       future: verify(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.waiting) {
-          return snapshot.data != null ? HomePage(authResponseModel: authResponseModel) : const AuthPage();
+          return snapshot.data != null ? NavigationApp() : const AuthPage();//HomePage(authResponseModel: authResponseModel) : const AuthPage();
         }
 
         //TODO: fazer tela de splash aqui

@@ -47,7 +47,6 @@ class NavigationApp extends StatelessWidget {
             ),
           ),
           body: Container(
-            height: MediaQuery.of(context).size.height,
             color: Colors.grey.shade200,
             child: const TabBarView(
               children: <Widget>[

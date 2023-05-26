@@ -2,6 +2,7 @@ import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart
 import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
 import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
 import 'package:aplicationsalasmobile/src/pages/Reservas/card_info_reserva.dart';
+import 'package:aplicationsalasmobile/src/pages/shared/widgets/empty_widget.dart';
 import 'package:aplicationsalasmobile/src/providers/reserva_provider.dart';
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
@@ -54,16 +55,24 @@ class _ReservasPageState extends State<ReservasPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          color: Theme.of(context).colorScheme.secondary,
-          onRefresh: () => refreshReservas(),
-          child: FutureBuilder(
+    return Container(
+      color: Colors.grey.shade200,
+      child: RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
+        onRefresh: ()async{
+          setState(() {});
+          // refreshReservas();
+        },
+        child: ListView(
+          children: [
+            FutureBuilder(
               future: getReservasDia(),
               builder: (context, snapshot) {
                 return Consumer<ReservaProvider>(
                   builder: (context, reservaProvider, child) {
+                    if(reservaProvider.listaReservasUsuario.isEmpty) {
+                      return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
+                    }
                     return Column(
                       children: [
                         ...reservaProvider.listaReservasUsuario
@@ -79,35 +88,11 @@ class _ReservasPageState extends State<ReservasPage> {
                     );
                   },
                 );
-              }),
+              }
+            ),
+          ]
         ),
       ),
     );
-    // return SingleChildScrollView(
-    //   child: RefreshIndicator(
-    //     color: Theme.of(context).colorScheme.secondary,
-    //     onRefresh: () => refreshReservas(),
-    //     child: FutureBuilder(
-    //         future: getReservasDia(),
-    //         builder: (context, snapshot) {
-    //           return Consumer<ReservaProvider>(
-    //             builder: (context, reservaProvider, child) {
-    //               return Column(
-    //                 children: [
-    //                   ...reservaProvider.listaReservasUsuario
-    //                       .map((e) => CardInfoReserva(
-    //                             reservasUsuario: e,
-    //                             salaProvider: widget.salaProvider,
-    //                             reservaProvider: reservaProvider,
-    //                             token: authResponseModel.token,
-    //                           ))
-    //                       .toList()
-    //                 ],
-    //               );
-    //             },
-    //           );
-    //         }),
-    //   ),
-    // );
   }
 }
