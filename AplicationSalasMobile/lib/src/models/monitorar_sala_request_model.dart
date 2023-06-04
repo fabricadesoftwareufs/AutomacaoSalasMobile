@@ -1,6 +1,6 @@
 class MonitorarSalaRequestModel {
   final int id;
-  final bool estado;
+  late bool estado;
   final int salaId;
   final int equipamentoId;
   final bool salaParticula;
@@ -26,4 +26,6 @@ class MonitorarSalaRequestModel {
       'salaParticular': salaParticula,
     };
   }
+
+  factory MonitorarSalaRequestModel.empty() => MonitorarSalaRequestModel(id: 0, estado: false, salaId: 0, equipamentoId: 0, salaParticula: false);
 }

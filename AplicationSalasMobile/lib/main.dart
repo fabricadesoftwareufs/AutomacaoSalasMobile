@@ -15,13 +15,13 @@ import 'package:dotenv/dotenv.dart';
 
 
 void main() {
-  runApp(const MyApp());
-  // runApp(
-  //   DevicePreview(
-  //     enabled: !kReleaseMode,
-  //     builder: (context) => const MyApp(),
-  //   ),
-  // );
+  // runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var env = DotEnv(includePlatformEnvironment: true)..load();
     Dio dio = Dio();
-    dio.options.baseUrl = env['BASE_URL']??'';
+    dio.options.baseUrl = env['BASE_URL']??'http://marcosdosea-002-site2.itempurl.com/api';
 
     return MultiProvider(
       providers: [

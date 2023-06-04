@@ -5,6 +5,7 @@ import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SwitchWidget extends StatefulWidget {
   MonitoramentoLuzesModel monitoramentoLuzesModel;
@@ -29,8 +30,14 @@ class SwitchWidget extends StatefulWidget {
 }
 
 class _SwitchWidgetState extends State<SwitchWidget> {
-  late MonitorarSalaRequestModel monitoraSala;
+  late MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel.empty();
+  bool estadoDispositivo = false;
 
+  initState() {
+    estadoDispositivo = (widget.titulo == "Luzes")
+      ?widget.monitoramentoLuzesModel.estado
+      :widget.monitoramentoCondicionadoresModel.estado;
+  }
 
   monitorarLuzesSala(bool value) {
     monitoraSala = MonitorarSalaRequestModel(
@@ -52,24 +59,36 @@ class _SwitchWidgetState extends State<SwitchWidget> {
     widget.monitoramentoCondicionadoresModel.estado = value;
   }
 
+  late MaterialStateProperty<Icon?> thumbIcon = MaterialStateProperty.resolveWith<Icon?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected)) {
+          return Icon((widget.titulo == "Luzes")?FontAwesomeIcons.lightbulb:FontAwesomeIcons.temperatureFull, color: Color(0xff31cdba));
+        }
+        return Icon((widget.titulo == "Luzes")?FontAwesomeIcons.lightbulb:FontAwesomeIcons.temperatureEmpty, color: Color(0xff9fbed1));
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(widget.titulo, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black)),
         Switch(
-          value: (widget.titulo == "Luzes")
-              ? widget.monitoramentoLuzesModel.estado
-              : widget.monitoramentoCondicionadoresModel.estado,
+          value: estadoDispositivo,
           activeColor: Colors.white,
-          activeTrackColor: Colors.green,
+          activeTrackColor: Color(0xff31cdba),
+          inactiveTrackColor: Color(0xff9fbed1),
+          thumbIcon: thumbIcon,
           onChanged: (value) async {
             (widget.titulo == "Luzes") ? monitorarLuzesSala(value) : monitorarCondicionadoresSala(value);
 
-            await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((value) {
-              return (value == "Monitoramento realizado com sucesso!")
-                  ? showCustomToast(fToast: widget.fToast, titulo: value, cor: Colors.green.shade400)
-                  : showCustomToast(fToast: widget.fToast, titulo: value, cor: Colors.red.shade400);
+            await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
+              if(valueRequest == "Monitoramento realizado com sucesso!") {
+                estadoDispositivo = true;
+                return showCustomToast(fToast: widget.fToast, titulo: valueRequest, cor: Color(0xff31cdba));
+              }
+              estadoDispositivo = false;
+              return showCustomToast(fToast: widget.fToast, titulo: valueRequest, cor: Colors.red.shade400);
             });
 
             setState(() {});

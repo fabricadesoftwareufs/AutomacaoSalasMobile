@@ -29,15 +29,19 @@ class _CardInfoSalaState extends State<CardInfoSala> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(
-          color: Colors.black,
-        ),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      elevation: 5,
+      shadowColor: Colors.blue.shade100,
+      margin: const EdgeInsets.all(8),
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              stops: [0.02, 0.02],
+              colors: [Color(0xff3d31dd), Colors.white]
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(6)),
+          color: Color(0xffffffff),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

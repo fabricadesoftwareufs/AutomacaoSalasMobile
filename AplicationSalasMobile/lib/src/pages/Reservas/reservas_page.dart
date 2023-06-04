@@ -56,7 +56,8 @@ class _ReservasPageState extends State<ReservasPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey.shade200,
+      // color: Colors.grey.shade200,
+      alignment: Alignment.center,
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: ()async{
@@ -64,6 +65,7 @@ class _ReservasPageState extends State<ReservasPage> {
           // refreshReservas();
         },
         child: ListView(
+          shrinkWrap: true,
           children: [
             FutureBuilder(
               future: getReservasDia(),
@@ -71,7 +73,7 @@ class _ReservasPageState extends State<ReservasPage> {
                 return Consumer<ReservaProvider>(
                   builder: (context, reservaProvider, child) {
                     if(reservaProvider.listaReservasUsuario.isEmpty) {
-                      return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
+                      return Container(padding: const EdgeInsets.only(bottom: 50), child: Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!'));
                     }
                     return Column(
                       children: [

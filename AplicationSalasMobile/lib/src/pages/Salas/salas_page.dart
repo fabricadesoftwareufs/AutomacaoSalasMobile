@@ -54,7 +54,7 @@ class _SalasPageState extends State<SalasPage> {
             }),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: Container(alignment: Alignment.center, child: CircularProgressIndicator()));
               }
               if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
 
