@@ -50,7 +50,7 @@ class _SalasPageState extends State<SalasPage> {
         children: [
           FutureBuilder(
             future: verify().then((value) {
-              return salaProvider!.salasUsuario(17);
+              return salaProvider!.salasUsuario(value!.id);
             }),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

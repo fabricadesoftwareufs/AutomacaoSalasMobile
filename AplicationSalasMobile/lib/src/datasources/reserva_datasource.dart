@@ -1,4 +1,5 @@
 import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
+import 'package:aplicationsalasmobile/src/models/status_code_response.dart';
 import 'package:dio/dio.dart';
 
 import '../providers/reserva_provider.dart';
@@ -6,7 +7,7 @@ import '../providers/reserva_provider.dart';
 abstract class IReservaDatasource {
   Future<List<ReservaUsuarioResponseModel>> getReservaUsuario(String diaSemana, int idUsuario);
 
-  Future<String> cancelarReserva(int idReserva, ReservaProvider reservaProvider);
+  Future<StatusCodeResponse> cancelarReserva(int idReserva, ReservaProvider reservaProvider);
 }
 
 class ReservaDataSourceImpl extends IReservaDatasource {
@@ -26,16 +27,18 @@ class ReservaDataSourceImpl extends IReservaDatasource {
   }
 
   @override
-  Future<String> cancelarReserva(int idReserva,ReservaProvider reservaProvider) async {
+  Future<StatusCodeResponse> cancelarReserva(int idReserva,ReservaProvider reservaProvider) async {
     try {
       Response res = await dio.delete("/HorarioSala/cancelarReserva/$idReserva");
       reservaProvider.listaReservasUsuario.removeWhere((element) => element.horarioSala.id == idReserva);
-      return res.data["message"];
+      return StatusCodeResponse(statusCode: 200, mensagem: res.data["message"]); // res.data["message"];
     } on DioError catch (e) {
-      if(e.response?.statusCode == 500) {
-        return e.response?.data['message'];
+      if(e.response?.statusCode == 401) {
+        return StatusCodeResponse(statusCode: 401, mensagem: "Sem permissão!");
+      } else if(e.response?.statusCode == 500) {
+        return StatusCodeResponse(statusCode: 500, mensagem: e.response?.data['message']); // e.response?.data['message'];
       }
-      return "";
+      return StatusCodeResponse(statusCode: 500, mensagem: "Reserva não pode ser cancelada!");
     }
   }
 }

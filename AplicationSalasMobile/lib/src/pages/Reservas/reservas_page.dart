@@ -46,23 +46,23 @@ class _ReservasPageState extends State<ReservasPage> {
 
   Future<void> getReservasDia() async {
     await verify().then((value) => authResponseModel = value);
-    await reservaProvider!.reservasUsuario(widget.filtroDia, authResponseModel.id);
+    await reservaProvider!.reservasUsuario(widget.filtroDia, 17); // authResponseModel.id
   }
 
   Future<void> refreshReservas() async {
-    // await getReservas(widget.filtroDia, authResponseModel.id);
+    await getReservasDia();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.grey.shade200,
-      alignment: Alignment.center,
+      // alignment: Alignment.center,
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: ()async{
-          setState(() {});
-          // refreshReservas();
+          // setState(() {});
+          refreshReservas();
         },
         child: ListView(
           shrinkWrap: true,
@@ -73,9 +73,10 @@ class _ReservasPageState extends State<ReservasPage> {
                 return Consumer<ReservaProvider>(
                   builder: (context, reservaProvider, child) {
                     if(reservaProvider.listaReservasUsuario.isEmpty) {
-                      return Container(padding: const EdgeInsets.only(bottom: 50), child: Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!'));
+                      return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
                     }
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ...reservaProvider.listaReservasUsuario
                             .map((e) => CardInfoReserva(

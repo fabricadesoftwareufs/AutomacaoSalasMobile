@@ -1,5 +1,6 @@
 import 'package:aplicationsalasmobile/src/datasources/reserva_datasource.dart';
 import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
+import 'package:aplicationsalasmobile/src/models/status_code_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +16,11 @@ class ReservaProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> cancelarReservaUsuario(int idReserva) async {
-    print("IDRSERVA: $idReserva");
-
+  Future<StatusCodeResponse> cancelarReservaUsuario(int idReserva) async {
     listaReservasUsuario.forEach((element) {element.toJson();});
     IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
 
-    String deletarReserva = await reservasDataSource.cancelarReserva(idReserva, this);
+    StatusCodeResponse deletarReserva = await reservasDataSource.cancelarReserva(idReserva, this);
 
     notifyListeners();
     return deletarReserva;

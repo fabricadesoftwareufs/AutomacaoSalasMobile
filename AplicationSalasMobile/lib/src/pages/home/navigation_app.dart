@@ -1,7 +1,7 @@
+import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
 import 'package:aplicationsalasmobile/src/pages/Reservas/menu_semanal.dart';
 import 'package:aplicationsalasmobile/src/pages/Salas/salas_page.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NavigationApp extends StatefulWidget {
   const NavigationApp({Key? key}) : super(key: key);
@@ -17,13 +17,13 @@ class _NavigationAppState extends State<NavigationApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
       home: DefaultTabController(
-        initialIndex: 1,
+        initialIndex: 0,
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 60,
             title: const Text('SalasUfs', style: TextStyle(color: Colors.white)),
-            backgroundColor: Color(0xff3d31dd),
+            backgroundColor: Color(0xff277ebe),// Color(0xff3d31dd),
             elevation: 0,
           ),
           // backgroundColor: Color(0xff3d31dd),
@@ -31,7 +31,7 @@ class _NavigationAppState extends State<NavigationApp> {
             children: [
               Container(
                 height: 100,
-                color: Color(0xff3d31dd),
+                color: Color(0xff277ebe),
               ),
               Container(
                 decoration: const BoxDecoration(
@@ -52,42 +52,44 @@ class _NavigationAppState extends State<NavigationApp> {
             ],
           ),
           bottomNavigationBar: Container(
-            padding: EdgeInsets.all(10),
+            // padding: EdgeInsets.all(10),
+            height: 65,
             decoration: BoxDecoration(
-              color: Color(0xff3d31dd),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+              color: Colors.grey.shade500,//Color(0xff3d31dd),
+              // borderRadius: BorderRadius.only(
+              //   topLeft: Radius.circular(20),
+              //   topRight: Radius.circular(20),
+              // ),
             ),
             child: TabBar(
               dividerColor: Colors.transparent,
               labelPadding: EdgeInsets.zero,
               // padding: EdgeInsets.all(10),
               indicator: const BoxDecoration(
-                color: Colors.lightBlue,
-                borderRadius: BorderRadius.all(Radius.circular(10))
+                color: Color(0xff277ebe),//Colors.lightBlue,
+                // borderRadius: BorderRadius.all(Radius.circular(10))
                 // borderRadius: BorderRadius.only(
                 //   topLeft: Radius.circular(10),
                 //   topRight: Radius.circular(10),
                 // ),
               ),
+              unselectedLabelColor: Colors.black38,
               indicatorSize: TabBarIndicatorSize.tab,
               tabs: <Widget>[
                 Tab(
                   child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                    ),
+                    // decoration: const BoxDecoration(
+                    //   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                    // ),
                     child: Center(child: Text('Minhas Salas', style: TextStyle(color: Colors.white))),
                   ),
                   // icon: Icon(FontAwesomeIcons.house),
                 ),
                 Tab(
                   child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                    ),
+                    // decoration: const BoxDecoration(
+                    //   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                    // ),
                     child: Center(child: Text('Minhas Reservas', style: TextStyle(color: Colors.white))),
                   ),
                   // icon: Icon(FontAwesomeIcons.ticket),
