@@ -22,6 +22,7 @@ class SalaProvider extends ChangeNotifier {
 
     final StatusCodeResponse resultado = await salaDataSource.putMonitorarSala(monitoraSala, token);
     notifyListeners();
+    // print("Provider: ${resultado.statusCode}");
     return resultado;
   }
 

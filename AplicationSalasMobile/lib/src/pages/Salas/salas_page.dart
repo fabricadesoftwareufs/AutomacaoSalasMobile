@@ -9,7 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class SalasPage extends StatefulWidget {
-  const SalasPage({Key? key}) : super(key: key);
+  final AuthResponseModel auth;
+  const SalasPage({Key? key, required this.auth}) : super(key: key);
 
   @override
   State<SalasPage> createState() => _SalasPageState();
@@ -54,7 +55,7 @@ class _SalasPageState extends State<SalasPage> {
             }),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Container(alignment: Alignment.center, child: CircularProgressIndicator()));
+                return Center(child: Container(alignment: Alignment.center, padding: EdgeInsets.only(top: 20),child: CircularProgressIndicator(color: Color(0xff277ebe))));
               }
               if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
 
@@ -69,7 +70,7 @@ class _SalasPageState extends State<SalasPage> {
                       children: [
                         for (int i = 0; i < salasUsuario.length; i++)
                         ...[
-                          CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: token),
+                          CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: widget.auth.token),
                         ]
                       ],
                     ),

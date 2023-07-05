@@ -21,7 +21,7 @@ class ReservaDataSourceImpl extends IReservaDatasource {
       Response res = await dio.get("/HorarioSala/getReservasByUsuario/$diaSemana/$idUsuario");
       List<ReservaUsuarioResponseModel> lista = (res.data['result']['salasUsuario'] as List<dynamic>).map((e) => ReservaUsuarioResponseModel.fromJson(e)).toList();
       return lista;
-    } on DioError {
+    } on DioException {
       return [];
     }
   }
@@ -32,7 +32,7 @@ class ReservaDataSourceImpl extends IReservaDatasource {
       Response res = await dio.delete("/HorarioSala/cancelarReserva/$idReserva");
       reservaProvider.listaReservasUsuario.removeWhere((element) => element.horarioSala.id == idReserva);
       return StatusCodeResponse(statusCode: 200, mensagem: res.data["message"]); // res.data["message"];
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if(e.response?.statusCode == 401) {
         return StatusCodeResponse(statusCode: 401, mensagem: "Sem permissão!");
       } else if(e.response?.statusCode == 500) {

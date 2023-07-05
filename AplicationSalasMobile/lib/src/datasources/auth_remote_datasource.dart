@@ -20,9 +20,9 @@ class AuthDataSourceImpl extends IAuthDatasource{
     try{
       Response res = await dio.post("/Auth",data: authModel.toJson());
       AuthResponseModel authResponseModel = AuthResponseModel.fromJson(res.data);
-      //await setToken(authResponseModel);
+      // await setToken(authResponseModel);
       return authResponseModel;
-    } on DioError {
+    } on DioException {
       return AuthResponseModel.empty();
     }
 

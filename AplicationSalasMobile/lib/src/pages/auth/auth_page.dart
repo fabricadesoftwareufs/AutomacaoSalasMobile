@@ -1,4 +1,5 @@
 import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
+import 'package:aplicationsalasmobile/src/pages/home/navigation_app.dart';
 import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +18,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   TextEditingController login = TextEditingController();
   TextEditingController senha = TextEditingController();
-  bool isPasswordVisible = false;
+  bool isPasswordVisible = true;
   FToast fToast = FToast();
 
   @override
@@ -31,7 +32,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 60,
+          // toolbarHeight: 60,
           centerTitle: false,
           title: const Text('SalasUfs', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xff277ebe),
@@ -51,8 +52,7 @@ class _AuthPageState extends State<AuthPage> {
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20),
-                  )
-              ),
+                  )),
               child: Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -69,7 +69,15 @@ class _AuthPageState extends State<AuthPage> {
                       const SizedBox(height: 20),
                       TextFormFieldWidget(name: "CPF", controller: login, selecionado: (value) {}),
                       const SizedBox(height: 20),
-                      TextFormFieldWidget(name: "Senha", controller: senha, isPasswordVisible: isPasswordVisible, selecionado: (value) { setState(() {isPasswordVisible = value;});}),
+                      TextFormFieldWidget(
+                          name: "Senha",
+                          controller: senha,
+                          isPasswordVisible: isPasswordVisible,
+                          selecionado: (value) {
+                            setState(() {
+                              isPasswordVisible = value;
+                            });
+                          }),
                       const SizedBox(height: 20),
                       Row(
                         children: [
@@ -83,23 +91,20 @@ class _AuthPageState extends State<AuthPage> {
                                       borderRadius: BorderRadius.all(Radius.circular(5))),
                                 ),
                                 onPressed: () async {
-                                  if(login.text == "" || senha.text == "") {
+                                  if (login.text == "" || senha.text == "") {
                                     showCustomToast(fToast: fToast, titulo: "Preencha os campos!", cor: Colors.red.shade400);
-
                                   } else {
-                                    AuthRequestModel authRequestModel =
-                                        AuthRequestModel(login: login.text, senha: senha.text);
+                                    AuthRequestModel authRequestModel = AuthRequestModel(login: login.text, senha: senha.text);
 
-                                    await Provider.of<AuthProvider>(context, listen: false)
-                                        .login(authRequestModel)
-                                        .then((value) {
-                                      if (value != null) {
-                                        AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
-                                        authLocalDatasource.setCurrentUser(value);
-                                        Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
-                                      } else {
+                                    await Provider.of<AuthProvider>(context, listen: false).login(authRequestModel).then((value) {
+                                      if (value == null)
                                         showCustomToast(fToast: fToast, titulo: "CPF ou senha estam incorretos!", cor: Colors.red.shade400);
-                                      }
+
+                                      AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+                                      authLocalDatasource.setCurrentUser(value!);
+                                      // authLocalDatasource.getCurrentUser().then((value) => print(value.token));
+                                      Navigator.of(context)
+                                          .pushReplacement(MaterialPageRoute(builder: (context) => NavigationApp(auth: value)));
                                     });
                                   }
                                 },

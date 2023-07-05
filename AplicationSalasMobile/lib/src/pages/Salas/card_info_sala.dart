@@ -1,5 +1,8 @@
+import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
+import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
 import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
 import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
+import 'package:aplicationsalasmobile/src/pages/auth/auth_page.dart';
 import 'package:aplicationsalasmobile/src/pages/shared/widgets/switch_widget.dart';
 import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
 import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
@@ -29,11 +32,11 @@ class _CardInfoSalaState extends State<CardInfoSala> {
     fToast.init(context);
   }
 
-  monitorarLuzesSala() {
-    monitoraSala = MonitorarSalaRequestModel(
+  MonitorarSalaRequestModel monitorarLuzesSala() {
+    return monitoraSala = MonitorarSalaRequestModel(
       id: widget.salasUsuario.monitoramentoLuzesModel.id,
       equipamentoId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoId,
-      estado: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
+      estado: widget.salasUsuario.monitoramentoLuzesModel.estado,
       salaId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoNavigationModel.sala,
       salaParticula: widget.salasUsuario.monitoramentoLuzesModel.salaParticular
     );
@@ -80,34 +83,58 @@ class _CardInfoSalaState extends State<CardInfoSala> {
             ),
             SwitchWidget(
               titulo: "Luzes",
-              estadoDispositivo: widget.salasUsuario.monitoramentoLuzesModel.estado,
-              selecionadoChanged: (value) async {
-                monitorarLuzesSala();
-
-                await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
-                  if(valueRequest.statusCode == 200) { // if(valueRequest == "Monitoramento realizado com sucesso!") {
-                    setState(() => widget.salasUsuario.monitoramentoLuzesModel.estado = value);
-                    return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
-                  }
-                  return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-                });
-              }
+              fToast: fToast,
+              token: widget.token,
+              salaProvider: widget.salaProvider,
+              monitoramentoCondicionadoresModel: widget.salasUsuario.monitoramentoCondicionadoresModel,
+              monitoramentoLuzesModel: widget.salasUsuario.monitoramentoLuzesModel,
             ),
             SwitchWidget(
               titulo: "Ar-Condicionado",
-              estadoDispositivo: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
-              selecionadoChanged: (value) async {
-                monitorarCondicionadoresSala();
-
-                await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
-                  if(valueRequest.statusCode == 200) {
-                    setState(() => widget.salasUsuario.monitoramentoLuzesModel.estado = value);
-                    return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
-                  }
-                  return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-                });
-              }
+              fToast: fToast,
+              token: widget.token,
+              salaProvider: widget.salaProvider,
+              monitoramentoCondicionadoresModel: widget.salasUsuario.monitoramentoCondicionadoresModel,
+              monitoramentoLuzesModel: widget.salasUsuario.monitoramentoLuzesModel,
             ),
+            // SwitchWidget(
+            //   titulo: "Luzes",
+            //   estadoDispositivo: widget.salasUsuario.monitoramentoLuzesModel.estado,
+            //   selecionadoChanged: (value) async {
+            //     monitorarLuzesSala();
+            //
+            //     await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
+            //       if(valueRequest.statusCode == 200) { // if(valueRequest == "Monitoramento realizado com sucesso!") {
+            //         setState(() => widget.salasUsuario.monitoramentoLuzesModel.estado = value);
+            //         return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
+            //       }
+            //       return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
+            //     });
+            //   }
+            // ),
+            // SwitchWidget(
+            //   titulo: "Ar-Condicionado",
+            //   estadoDispositivo: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
+            //   selecionadoChanged: (value) async {
+            //     monitorarCondicionadoresSala();
+            //
+            //     await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
+            //       if(valueRequest.statusCode == 200) {
+            //         setState(() => widget.salasUsuario.monitoramentoCondicionadoresModel.estado = value);
+            //         return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
+            //       } else if(valueRequest.statusCode == 401) {
+            //         AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+            //         authLocalDatasource.setCurrentUser(AuthResponseModel.empty());
+            //         // Navigator.of(context).pop();
+            //         // return Navigator.push(
+            //         //   context,
+            //         //   MaterialPageRoute(builder: (context) => const AuthPage()),
+            //         // );
+            //       }
+            //       return showCustomToast(fToast: fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
+            //     });
+            //   }
+            // ),
           ],
         ),
       ),

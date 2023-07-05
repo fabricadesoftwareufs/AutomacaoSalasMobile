@@ -26,9 +26,6 @@ class _ReservasPageState extends State<ReservasPage> {
   bool inicializado = false;
   FToast fToast = FToast();
 
-
-  late final Future getReservas;
-
   Future<AuthResponseModel> verify() async {
     AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
     return await authLocalDatasource.getCurrentUser();
@@ -40,13 +37,15 @@ class _ReservasPageState extends State<ReservasPage> {
     reservaProvider ??= Provider.of<ReservaProvider>(context, listen: false);
     if (inicializado == false) {
       fToast.init(context);
+      // getReservasDia();
       inicializado = true;
+      // setState(() {});
     }
   }
 
-  Future<void> getReservasDia() async {
+  Future<List<ReservaUsuarioResponseModel>> getReservasDia() async {
     await verify().then((value) => authResponseModel = value);
-    await reservaProvider!.reservasUsuario(widget.filtroDia, 17); // authResponseModel.id
+    return await reservaProvider!.reservasUsuario(widget.filtroDia, authResponseModel.id);
   }
 
   Future<void> refreshReservas() async {
@@ -55,14 +54,15 @@ class _ReservasPageState extends State<ReservasPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("restatou");
     return Container(
       // color: Colors.grey.shade200,
       // alignment: Alignment.center,
       child: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: ()async{
-          // setState(() {});
-          refreshReservas();
+          setState(() {});
+          // refreshReservas();
         },
         child: ListView(
           shrinkWrap: true,
@@ -70,27 +70,50 @@ class _ReservasPageState extends State<ReservasPage> {
             FutureBuilder(
               future: getReservasDia(),
               builder: (context, snapshot) {
-                return Consumer<ReservaProvider>(
-                  builder: (context, reservaProvider, child) {
-                    if(reservaProvider.listaReservasUsuario.isEmpty) {
-                      return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
-                    }
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ...reservaProvider.listaReservasUsuario
-                            .map((e) => CardInfoReserva(
-                          reservasUsuario: e,
-                          salaProvider: widget.salaProvider,
-                          reservaProvider: reservaProvider,
-                          token: authResponseModel.token,
-                          fToast: fToast,
-                        ))
-                            .toList()
-                      ],
-                    );
-                  },
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: Container(alignment: Alignment.center, padding: EdgeInsets.only(top: 20),child: CircularProgressIndicator(color: Color(0xff277ebe))));
+                }
+                if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
+
+                List<ReservaUsuarioResponseModel> listaReservasUsuario = snapshot.data as List<ReservaUsuarioResponseModel>;
+
+                return (listaReservasUsuario.isEmpty)
+                    ?Container(padding: EdgeInsets.all(20), child: Empty_Widget(titulo: 'Sem reservas', descricao: 'Você não possui reservas para este dia!'))
+                    :Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                    ...listaReservasUsuario
+                    .map((e) => CardInfoReserva(
+                  reservasUsuario: e,
+                  salaProvider: widget.salaProvider,
+                  reservaProvider: reservaProvider!,
+                  token: authResponseModel.token,
+                  fToast: fToast, altereEstado: (void value) => setState(() { listaReservasUsuario.remove(e);}),
+                  ))
+                  .toList()
+                  ],
                 );
+                // return Consumer<ReservaProvider>(
+                //   builder: (context, reservaProvider, child) {
+                //     if(reservaProvider.listaReservasUsuario.isEmpty) {
+                //       return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
+                //     }
+                //     return Column(
+                //       mainAxisAlignment: MainAxisAlignment.start,
+                //       children: [
+                //         ...reservaProvider.listaReservasUsuario
+                //             .map((e) => CardInfoReserva(
+                //           reservasUsuario: e,
+                //           salaProvider: widget.salaProvider,
+                //           reservaProvider: reservaProvider,
+                //           token: authResponseModel.token,
+                //           fToast: fToast,
+                //         ))
+                //             .toList()
+                //       ],
+                //     );
+                //   },
+                // );
               }
             ),
           ]

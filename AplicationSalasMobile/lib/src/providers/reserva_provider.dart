@@ -10,10 +10,11 @@ class ReservaProvider extends ChangeNotifier {
 
   ReservaProvider(this.dio);
 
-  Future<void> reservasUsuario(String diaSemana, int idUsuario) async {
+  Future<List<ReservaUsuarioResponseModel>> reservasUsuario(String diaSemana, int idUsuario) async {
     IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
     listaReservasUsuario = await reservasDataSource.getReservaUsuario(diaSemana, idUsuario);
     notifyListeners();
+    return listaReservasUsuario;
   }
 
   Future<StatusCodeResponse> cancelarReservaUsuario(int idReserva) async {

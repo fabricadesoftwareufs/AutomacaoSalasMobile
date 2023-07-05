@@ -8,18 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class CardInfoReserva extends StatefulWidget {
-  final ReservaUsuarioResponseModel reservasUsuario;
+  late ReservaUsuarioResponseModel reservasUsuario;
   final ReservaProvider reservaProvider;
   final SalaProvider salaProvider;
   final String token;
   final FToast fToast;
+  final ValueChanged<ReservaUsuarioResponseModel> altereEstado;
 
-  const CardInfoReserva({Key? key,
+  CardInfoReserva({Key? key,
     required this.reservasUsuario,
     required this.reservaProvider,
     required this.salaProvider,
     required this.fToast,
-    required this.token})
+    required this.token,
+    required this.altereEstado})
       : super(key: key);
 
   @override
@@ -79,73 +81,23 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                     Text("${widget.reservasUsuario.bloco.titulo}",
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                    // Text(
-                    //     "${widget.reservasUsuario.horarioSala.horario_inicial.substring(0, 5)} às ${widget.reservasUsuario
-                    //         .horarioSala.horario_final.substring(0, 5)}",
-                    //     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                    // const SizedBox(height: 2),
-                    // TextButton(
-                    //   style: TextButton.styleFrom(
-                    //     backgroundColor: Colors.red,
-                    //   ),
-                    //   onPressed: () async {
-                    //     await widget.reservaProvider
-                    //         .cancelarReservaUsuario(widget.reservasUsuario.horarioSala.id)
-                    //         .then((value) =>
-                    //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //             content: Text(
-                    //               value,
-                    //               textAlign: TextAlign.center,
-                    //               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    //             ),
-                    //             backgroundColor: Colors.green)));
-                    //   },
-                    //   child: const Text(
-                    //     'Cancelar',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // )
                   ],
                 ),
                 SwitchWidget(
                   titulo: "Luzes",
-                  estadoDispositivo: widget.reservasUsuario.monitoramentoLuzes.estado,
-                  selecionadoChanged: (value) async {
-                    monitorarLuzesSala();
-
-                    await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
-                      if(valueRequest.statusCode == 200) {
-                        setState(() => widget.reservasUsuario.monitoramentoLuzes.estado = value);
-                        return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
-                      }
-                      return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-                    });
-                  }
-                  // monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  // monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  // salaProvider: widget.salaProvider,
-                  // token: widget.token,
-                  // fToast: widget.fToast,
+                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                  salaProvider: widget.salaProvider,
+                  token: widget.token,
+                  fToast: widget.fToast,
                 ),
                 SwitchWidget(
                   titulo: "Ar-Condicionado",
-                  estadoDispositivo: widget.reservasUsuario.monitoramentoCondicionadores.estado,
-                  selecionadoChanged: (value) async {
-                    monitorarCondicionadoresSala();
-
-                    await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
-                      if(valueRequest.statusCode == 200) {
-                        setState(() => widget.reservasUsuario.monitoramentoCondicionadores.estado = value);
-                        return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
-                      }
-                      return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-                    });
-                  }
-                  // monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  // monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  // salaProvider: widget.salaProvider,
-                  // token: widget.token,
-                  // fToast: widget.fToast,
+                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                  salaProvider: widget.salaProvider,
+                  token: widget.token,
+                  fToast: widget.fToast,
                 ),
               ],
             ),
@@ -169,25 +121,16 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                     ),
                     backgroundColor: MaterialStateProperty.all(Colors.red.shade400),
                   ),
-                  // style: TextButton.styleFrom(
-                  //   backgroundColor: Colors.red.shade400,
-                  // ),
                   onPressed: () async {
                     await widget.reservaProvider
                         .cancelarReservaUsuario(widget.reservasUsuario.horarioSala.id)
                         .then((value) {
                           if(value.statusCode == 200) {
+                            widget.altereEstado(widget.reservasUsuario);
                             return showCustomToast(fToast: widget.fToast, titulo: value.mensagem, cor: const Color(0xff31cdba));
                           }
-                          return showCustomToast(fToast: widget.fToast, titulo: value.mensagem, cor: Colors.red.shade400);
+                            return showCustomToast(fToast: widget.fToast, titulo: value.mensagem, cor: Colors.red.shade400);
                         }
-                        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //     content: Text(
-                        //       value,
-                        //       textAlign: TextAlign.center,
-                        //       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        //     ),
-                        //     backgroundColor: Colors.green))
                     );
                   },
                   child: const Text(

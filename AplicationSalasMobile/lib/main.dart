@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:aplicationsalasmobile/src/pages/auth/auth_page.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:aplicationsalasmobile/src/pages/home/home_page.dart';
@@ -40,6 +41,14 @@ class MyApp extends StatelessWidget {
     var env = DotEnv(includePlatformEnvironment: true)..load();
     Dio dio = Dio();
     dio.options.baseUrl = env['BASE_URL']??'http://marcosdosea-002-site2.itempurl.com/api';
+    // dio.interceptors.add(PrettyDioLogger(
+    //     requestHeader: true,
+    //     requestBody: true,
+    //     responseBody: true,
+    //     responseHeader: false,
+    //     error: true,
+    //     compact: true,
+    //     maxWidth: 90));
 
     return MultiProvider(
       providers: [
@@ -48,13 +57,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ReservaProvider>(create: (_) => ReservaProvider(dio))
       ],
       child: MaterialApp(
+        color: Colors.red,
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
         title: 'Salas Ufs',
         theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
         routes: {
-          "/home": (_) => NavigationApp(),// HomePage(authResponseModel: AuthResponseModel.empty()),
+          "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),// HomePage(authResponseModel: AuthResponseModel.empty()),
           "/login": (_) => const AuthPage(),
         },
         home: VerifyAuth(),
@@ -78,33 +88,39 @@ class _VerifyAuthState extends State<VerifyAuth> {
     // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) {
-      Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(builder: (ctx) => const AuthPage())
-      );
+      verify().then((value) {
+        (value.id != 0) ? Navigator.of(context).pushReplacement(
+            CupertinoPageRoute(builder: (ctx) => NavigationApp(auth: value))
+        ) : Navigator.of(context).pushReplacement(
+            CupertinoPageRoute(builder: (ctx) => const AuthPage())
+        );
+      });
     });
   }
 
 
-  Future<AuthResponseModel?> verify() async {
+  Future<AuthResponseModel> verify() async {
     AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
-    // return AuthResponseModel.empty();
-    return authResponseModel = (await authLocalDatasource.getCurrentUser());
+    return AuthResponseModel.empty();
+    // return authResponseModel = (await authLocalDatasource.getCurrentUser());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff277ebe),
+      backgroundColor: const Color(0xfff9faf7),
       body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            // Image(
-            //   image: AssetImage("assets/img/logo_provisoria.png"),
-            //   width: 300,
-            // ),
-            SpinKitDualRing(color: Color(0xfff9faf7), size: 50)
+            Image(
+              image: AssetImage("assets/img/logo_provisoria.png"),
+              width: 300,
+            ),
+            SizedBox(height: 20),
+            Text("SalasUfs", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500))
+            // SpinKitDualRing(color: Color(0xfff9faf7), size: 50)
           ],
         ),
       ),
