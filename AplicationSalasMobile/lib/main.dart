@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var env = DotEnv(includePlatformEnvironment: true)..load();
     Dio dio = Dio();
-    dio.options.baseUrl = env['BASE_URL']??'http://marcosdosea-002-site2.itempurl.com/api';
+    //dio.options.baseUrl = env['BASE_URL']??'http://marcosdosea-002-site2.itempurl.com/api';
+    dio.options.baseUrl = "https://192.168.18.13:5001/api";
     // dio.interceptors.add(PrettyDioLogger(
     //     requestHeader: true,
     //     requestBody: true,

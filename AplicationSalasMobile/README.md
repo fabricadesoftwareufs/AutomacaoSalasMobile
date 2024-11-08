@@ -13,4 +13,3 @@ Antes de rodar a aplicação, crie um arquivo ".env" na raiz do projeto para def
 ```bash
   BASE_URL=link_da_url_base
 ```
-    
