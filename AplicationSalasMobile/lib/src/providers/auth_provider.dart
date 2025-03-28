@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:aplicationsalasmobile/src/datasources/auth_remote_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_request_model.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/datasources/auth_remote_datasource.dart';
+import 'package:salas_mobile/src/models/auth_request_model.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
 
 class AuthProvider extends ChangeNotifier{
   bool logado = false;

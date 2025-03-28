@@ -1,10 +1,10 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/Reservas/card_info_reserva.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/empty_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/reserva_provider.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/reserva_usuario_response_model.dart';
+import 'package:salas_mobile/src/pages/Reservas/card_info_reserva.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/empty_widget.dart';
+import 'package:salas_mobile/src/providers/reserva_provider.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ class ReservasPage extends StatefulWidget {
   final SalaProvider salaProvider;
   final String filtroDia;
 
-  const ReservasPage({Key? key, required this.salaProvider, required this.filtroDia}) : super(key: key);
+  const ReservasPage({super.key, required this.salaProvider, required this.filtroDia});
 
   @override
   State<ReservasPage> createState() => _ReservasPageState();
@@ -90,7 +90,7 @@ class _ReservasPageState extends State<ReservasPage> {
                   token: authResponseModel.token,
                   fToast: fToast, altereEstado: (void value) => setState(() { listaReservasUsuario.remove(e);}),
                   ))
-                  .toList()
+                  
                   ],
                 );
                 // return Consumer<ReservaProvider>(

@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const KEY_SESSION_USER = 'SESSION_USER';

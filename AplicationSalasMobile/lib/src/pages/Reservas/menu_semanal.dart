@@ -1,11 +1,11 @@
-import 'package:aplicationsalasmobile/src/pages/Reservas/circle_dayweek.dart';
-import 'package:aplicationsalasmobile/src/pages/Reservas/reservas_page.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/pages/Reservas/circle_dayweek.dart';
+import 'package:salas_mobile/src/pages/Reservas/reservas_page.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MenuSemanal extends StatefulWidget {
-  const MenuSemanal({Key? key}) : super(key: key);
+  const MenuSemanal({super.key});
 
   @override
   State<MenuSemanal> createState() => _MenuSemanalState();

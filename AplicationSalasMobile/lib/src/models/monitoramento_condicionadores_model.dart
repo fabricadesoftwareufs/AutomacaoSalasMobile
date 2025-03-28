@@ -1,4 +1,4 @@
-import 'package:aplicationsalasmobile/src/models/equipamento_navigation_model.dart';
+import 'package:salas_mobile/src/models/equipamento_navigation_model.dart';
 
 class MonitoramentoCondicionadoresModel {
   final int id;
@@ -32,8 +32,7 @@ class MonitoramentoCondicionadoresModel {
       'estado': estado,
       'equipamentoId': equipamentoId,
       'salaParticular': salaParticular,
-      if(equipamentoNavigationModel != null)
-        'equipamentoNavigation': equipamentoNavigationModel.toJson(),
+      'equipamentoNavigation': equipamentoNavigationModel.toJson(),
     };
   }
 

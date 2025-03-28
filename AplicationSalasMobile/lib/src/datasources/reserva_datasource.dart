@@ -1,5 +1,5 @@
-import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/status_code_response.dart';
+import 'package:salas_mobile/src/models/reserva_usuario_response_model.dart';
+import 'package:salas_mobile/src/models/status_code_response.dart';
 import 'package:dio/dio.dart';
 
 import '../providers/reserva_provider.dart';

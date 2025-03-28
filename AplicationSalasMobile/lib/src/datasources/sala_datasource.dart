@@ -1,8 +1,8 @@
-import 'package:aplicationsalasmobile/src/models/bloco_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
-import 'package:aplicationsalasmobile/src/models/sala_model.dart';
-import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/status_code_response.dart';
+import 'package:salas_mobile/src/models/bloco_model.dart';
+import 'package:salas_mobile/src/models/monitorar_sala_request_model.dart';
+import 'package:salas_mobile/src/models/sala_model.dart';
+import 'package:salas_mobile/src/models/salas_usuario_response_model.dart';
+import 'package:salas_mobile/src/models/status_code_response.dart';
 import 'package:dio/dio.dart';
 
 abstract class ISalaDatasource {
