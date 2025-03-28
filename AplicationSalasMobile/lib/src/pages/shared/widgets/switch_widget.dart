@@ -1,11 +1,11 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitoramento_condicionadores_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitoramento_luzes_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
-import 'package:aplicationsalasmobile/src/pages/auth/auth_page.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/monitoramento_condicionadores_model.dart';
+import 'package:salas_mobile/src/models/monitoramento_luzes_model.dart';
+import 'package:salas_mobile/src/models/monitorar_sala_request_model.dart';
+import 'package:salas_mobile/src/pages/auth/auth_page.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/toast_widget.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -97,14 +97,13 @@ class SwitchWidget extends StatefulWidget {
   FToast fToast;
 
   SwitchWidget(
-      {Key? key,
+      {super.key,
        required this.fToast,
       required this.titulo,
       required this.monitoramentoLuzesModel,
       required this.monitoramentoCondicionadoresModel,
       required this.salaProvider,
-      required this.token})
-      : super(key: key);
+      required this.token});
 
   @override
   State<SwitchWidget> createState() => _SwitchWidgetState();
@@ -114,6 +113,7 @@ class _SwitchWidgetState extends State<SwitchWidget> {
   late MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel.empty();
   bool estadoDispositivo = false;
 
+  @override
   initState() {
     estadoDispositivo = (widget.titulo == "Luzes")
       ?widget.monitoramentoLuzesModel.estado
@@ -140,9 +140,9 @@ class _SwitchWidgetState extends State<SwitchWidget> {
     widget.monitoramentoCondicionadoresModel.estado = value;
   }
 
-  late MaterialStateProperty<Icon?> thumbIcon = MaterialStateProperty.resolveWith<Icon?>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
+  late WidgetStateProperty<Icon?> thumbIcon = WidgetStateProperty.resolveWith<Icon?>(
+      (Set<WidgetState> states) {
+        if (states.contains(WidgetState.selected)) {
           return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: Color(0xff31cdba));
         }
         return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: Color(0xff9fbed1));

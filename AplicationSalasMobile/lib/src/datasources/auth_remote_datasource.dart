@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:aplicationsalasmobile/src/models/auth_request_model.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/auth_request_model.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
 
 const KEY_SESSION_TOKEN = 'SESSION_TOKEN';
 

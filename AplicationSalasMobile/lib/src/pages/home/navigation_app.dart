@@ -1,11 +1,11 @@
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/Reservas/menu_semanal.dart';
-import 'package:aplicationsalasmobile/src/pages/Salas/salas_page.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/pages/Reservas/menu_semanal.dart';
+import 'package:salas_mobile/src/pages/Salas/salas_page.dart';
 import 'package:flutter/material.dart';
 
 class NavigationApp extends StatefulWidget {
   final AuthResponseModel auth;
-  NavigationApp({Key? key, required this.auth}) : super(key: key);
+  const NavigationApp({super.key, required this.auth});
 
   @override
   State<NavigationApp> createState() => _NavigationAppState();

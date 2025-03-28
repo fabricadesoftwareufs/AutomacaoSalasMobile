@@ -1,9 +1,9 @@
-import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
-import 'package:aplicationsalasmobile/src/models/reserva_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/switch_widget.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/reserva_provider.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/models/monitorar_sala_request_model.dart';
+import 'package:salas_mobile/src/models/reserva_usuario_response_model.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/switch_widget.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/toast_widget.dart';
+import 'package:salas_mobile/src/providers/reserva_provider.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,14 +15,13 @@ class CardInfoReserva extends StatefulWidget {
   final FToast fToast;
   final ValueChanged<ReservaUsuarioResponseModel> altereEstado;
 
-  CardInfoReserva({Key? key,
+  CardInfoReserva({super.key,
     required this.reservasUsuario,
     required this.reservaProvider,
     required this.salaProvider,
     required this.fToast,
     required this.token,
-    required this.altereEstado})
-      : super(key: key);
+    required this.altereEstado});
 
   @override
   State<CardInfoReserva> createState() => _CardInfoReservaState();
@@ -77,9 +76,9 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("${widget.reservasUsuario.sala.titulo}",
+                    Text(widget.reservasUsuario.sala.titulo,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                    Text("${widget.reservasUsuario.bloco.titulo}",
+                    Text(widget.reservasUsuario.bloco.titulo,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                   ],
                 ),
@@ -114,12 +113,12 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                     style: const TextStyle(fontSize: 17)),
                 ElevatedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(Colors.red.shade400),
+                    backgroundColor: WidgetStateProperty.all(Colors.red.shade400),
                   ),
                   onPressed: () async {
                     await widget.reservaProvider

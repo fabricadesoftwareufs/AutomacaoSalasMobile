@@ -1,14 +1,14 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/empty_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/salas_usuario_response_model.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/empty_widget.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final AuthResponseModel authResponseModel;
-  const HomePage({Key? key, required this.authResponseModel}) : super(key: key);
+  const HomePage({super.key, required this.authResponseModel});
 
   @override
   State<HomePage> createState() => _HomePageState();

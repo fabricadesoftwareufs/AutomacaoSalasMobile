@@ -1,9 +1,9 @@
-import 'package:aplicationsalasmobile/src/models/bloco_model.dart';
-import 'package:aplicationsalasmobile/src/models/horario_sala_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitoramento_condicionadores_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitoramento_luzes_model.dart';
-import 'package:aplicationsalasmobile/src/models/sala_exclusiva_model.dart';
-import 'package:aplicationsalasmobile/src/models/sala_model.dart';
+import 'package:salas_mobile/src/models/bloco_model.dart';
+import 'package:salas_mobile/src/models/horario_sala_model.dart';
+import 'package:salas_mobile/src/models/monitoramento_condicionadores_model.dart';
+import 'package:salas_mobile/src/models/monitoramento_luzes_model.dart';
+import 'package:salas_mobile/src/models/sala_exclusiva_model.dart';
+import 'package:salas_mobile/src/models/sala_model.dart';
 
 class ReservaUsuarioResponseModel {
   final SalaModel sala;

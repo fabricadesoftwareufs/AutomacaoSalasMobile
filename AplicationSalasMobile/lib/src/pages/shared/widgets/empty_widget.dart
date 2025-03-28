@@ -1,4 +1,4 @@
-import 'package:empty_widget/empty_widget.dart';
+import 'package:empty_widget_pro/empty_widget_pro.dart';
 import 'package:flutter/material.dart';
 
 Widget Empty_Widget({required String titulo, required String descricao}){

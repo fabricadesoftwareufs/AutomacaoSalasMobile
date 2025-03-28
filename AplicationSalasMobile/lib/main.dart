@@ -1,24 +1,20 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/home/navigation_app.dart';
-import 'package:aplicationsalasmobile/src/providers/reserva_provider.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/pages/home/navigation_app.dart';
+import 'package:salas_mobile/src/providers/reserva_provider.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:aplicationsalasmobile/src/pages/auth/auth_page.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:salas_mobile/src/pages/auth/auth_page.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:aplicationsalasmobile/src/pages/home/home_page.dart';
-import 'package:aplicationsalasmobile/src/providers/auth_provider.dart';
+import 'package:salas_mobile/src/providers/auth_provider.dart';
 import 'package:dotenv/dotenv.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-
-void main() async {
-  // runApp(const MyApp());
+void main() {
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -27,12 +23,6 @@ void main() async {
   );
 }
 
-// Future initialization(BuildContext? context) async {
-//   print("Entrou");
-//   await Future.delayed(Duration(seconds: 5));
-//   print("SAIUUUUUUUUUUUUUU");
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -40,15 +30,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var env = DotEnv(includePlatformEnvironment: true)..load();
     Dio dio = Dio();
-    dio.options.baseUrl = env['BASE_URL']??'http://marcosdosea-002-site2.itempurl.com/api';
-    // dio.interceptors.add(PrettyDioLogger(
-    //     requestHeader: true,
-    //     requestBody: true,
-    //     responseBody: true,
-    //     responseHeader: false,
-    //     error: true,
-    //     compact: true,
-    //     maxWidth: 90));
+    dio.options.baseUrl = env['BASE_URL']??'http://itetech-001-site4.qtempurl.com/api';
+    dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
 
     return MultiProvider(
       providers: [
@@ -64,7 +54,7 @@ class MyApp extends StatelessWidget {
         title: 'Salas Ufs',
         theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
         routes: {
-          "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),// HomePage(authResponseModel: AuthResponseModel.empty()),
+          "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),
           "/login": (_) => const AuthPage(),
         },
         home: VerifyAuth(),
@@ -74,7 +64,7 @@ class MyApp extends StatelessWidget {
 }
 
 class VerifyAuth extends StatefulWidget {
-  VerifyAuth({Key? key}) : super(key: key);
+  const VerifyAuth({super.key});
 
   @override
   State<VerifyAuth> createState() => _VerifyAuthState();
@@ -85,7 +75,6 @@ class _VerifyAuthState extends State<VerifyAuth> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3)).then((value) {
       verify().then((value) {

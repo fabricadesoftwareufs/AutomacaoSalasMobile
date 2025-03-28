@@ -1,15 +1,15 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/pages/home/navigation_app.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/pages/home/navigation_app.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:aplicationsalasmobile/src/models/auth_request_model.dart';
-import 'package:aplicationsalasmobile/src/pages/auth/widgets/textFormField_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/auth_provider.dart';
+import 'package:salas_mobile/src/models/auth_request_model.dart';
+import 'package:salas_mobile/src/pages/auth/widgets/textFormField_widget.dart';
+import 'package:salas_mobile/src/providers/auth_provider.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  const AuthPage({super.key});
 
   @override
   State<AuthPage> createState() => _AuthPageState();
@@ -97,8 +97,9 @@ class _AuthPageState extends State<AuthPage> {
                                     AuthRequestModel authRequestModel = AuthRequestModel(login: login.text, senha: senha.text);
 
                                     await Provider.of<AuthProvider>(context, listen: false).login(authRequestModel).then((value) {
-                                      if (value == null)
+                                      if (value == null) {
                                         showCustomToast(fToast: fToast, titulo: "CPF ou senha estam incorretos!", cor: Colors.red.shade400);
+                                      }
 
                                       AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
                                       authLocalDatasource.setCurrentUser(value!);

@@ -1,11 +1,11 @@
-import 'package:aplicationsalasmobile/src/datasources/auth_local_datasource.dart';
-import 'package:aplicationsalasmobile/src/models/auth_response_model.dart';
-import 'package:aplicationsalasmobile/src/models/monitorar_sala_request_model.dart';
-import 'package:aplicationsalasmobile/src/models/salas_usuario_response_model.dart';
-import 'package:aplicationsalasmobile/src/pages/auth/auth_page.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/switch_widget.dart';
-import 'package:aplicationsalasmobile/src/pages/shared/widgets/toast_widget.dart';
-import 'package:aplicationsalasmobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
+import 'package:salas_mobile/src/models/auth_response_model.dart';
+import 'package:salas_mobile/src/models/monitorar_sala_request_model.dart';
+import 'package:salas_mobile/src/models/salas_usuario_response_model.dart';
+import 'package:salas_mobile/src/pages/auth/auth_page.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/switch_widget.dart';
+import 'package:salas_mobile/src/pages/shared/widgets/toast_widget.dart';
+import 'package:salas_mobile/src/providers/sala_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,8 +15,7 @@ class CardInfoSala extends StatefulWidget {
   final String token;
 
   const CardInfoSala(
-      {Key? key, required this.salasUsuario, required this.token, required this.salaProvider})
-      : super(key: key);
+      {super.key, required this.salasUsuario, required this.token, required this.salaProvider});
 
   @override
   State<CardInfoSala> createState() => _CardInfoSalaState();

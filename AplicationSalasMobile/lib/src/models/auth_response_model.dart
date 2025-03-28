@@ -11,7 +11,7 @@ class AuthResponseModel{
       cpf: map['cpf'],
       nome: map['nome'],
       token: map['token']
-    );
+  );
 
   Map<String, dynamic> toJson() {
     return {
