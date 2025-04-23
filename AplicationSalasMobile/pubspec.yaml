@@ -31,10 +31,12 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter_icons:
-  image_path: "assets/img/logo_provisoria.png"
-
   android: "launcher_icon"
   ios: true
+  image_path: "assets/img/logo_provisoria.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/img/logo_provisoria.png"
+  min_sdk_android: 21
 
 
 flutter:

@@ -1,6 +1,6 @@
 {
-    "name": "salas_mobile",
-    "short_name": "salas_mobile",
+    "name": "SmartSala",
+    "short_name": "SmartSala",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -34,7 +34,7 @@ class _AuthPageState extends State<AuthPage> {
         appBar: AppBar(
           // toolbarHeight: 60,
           centerTitle: false,
-          title: const Text('SalasUfs', style: TextStyle(color: Colors.white)),
+          title: const Text('SmartSala', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xff277ebe),
           elevation: 0,
         ),
@@ -62,7 +62,7 @@ class _AuthPageState extends State<AuthPage> {
                       //     textAlign: TextAlign.center, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500)),
                       // const SizedBox(height: 20),
                       Image.asset(
-                        'assets/img/logo_provisoria.png',
+                        'assets/img/knuth.png',
                         fit: BoxFit.fill,
                         height: 180,
                       ),

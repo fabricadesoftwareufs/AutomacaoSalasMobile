@@ -21,7 +21,7 @@ class _NavigationAppState extends State<NavigationApp> {
         backgroundColor: Color(0xff277ebe),
         appBar: AppBar(
           centerTitle: false,
-          title: const Text('SalasUfs', style: TextStyle(color: Colors.white)),
+          title: const Text('SmartSala', style: TextStyle(color: Colors.white)),
           backgroundColor: Color(0xff277ebe),// Color(0xff3d31dd),
           elevation: 0,
           shadowColor: Colors.red,

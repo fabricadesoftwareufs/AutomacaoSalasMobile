@@ -108,7 +108,7 @@ class _VerifyAuthState extends State<VerifyAuth> {
               width: 300,
             ),
             SizedBox(height: 20),
-            Text("SalasUfs", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500))
+            Text("SmartSala", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500))
             // SpinKitDualRing(color: Color(0xfff9faf7), size: 50)
           ],
         ),
