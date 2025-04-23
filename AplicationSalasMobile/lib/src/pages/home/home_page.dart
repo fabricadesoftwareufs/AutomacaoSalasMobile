@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text("SalasUfs")),
+        appBar: AppBar(title: const Text("SmartSala")),
         body: Container(
           color: Colors.grey.shade200,
           child: Column(
