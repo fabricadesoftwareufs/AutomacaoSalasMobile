@@ -10,84 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// class SwitchWidgetTeste extends StatefulWidget {
-//   final String titulo;
-//   late bool estadoDispositivo;
-//   final String token;
-//   final FToast fToast;
-//   final SalaProvider salaProvider;
-//   final MonitorarSalaRequestModel monitoraSala;
-//   SwitchWidgetTeste({Key? key, required this.titulo, required this.estadoDispositivo, required this.monitoraSala, required this.token, required this.fToast, required this.salaProvider}) : super(key: key);
-//
-//   @override
-//   State<SwitchWidgetTeste> createState() => _SwitchWidgetState();
-// }
-//
-// class _SwitchWidgetState extends State<SwitchWidgetTeste> {
-//
-//   late MaterialStateProperty<Icon?> thumbIcon = MaterialStateProperty.resolveWith<Icon?>(
-//         (Set<MaterialState> states) {
-//       if (states.contains(MaterialState.selected)) {
-//         return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: const Color(0xff31cdba));
-//       }
-//       return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: const Color(0xff9fbed1));
-//     },
-//   );
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Text(widget.titulo, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black)),
-//         Switch(
-//           value: widget.estadoDispositivo,
-//           activeColor: Colors.white,
-//           activeTrackColor: const Color(0xff31cdba),
-//           inactiveTrackColor: const Color(0xff9fbed1),
-//           thumbIcon: thumbIcon,
-//           onChanged: (value) async {
-//             await widget.salaProvider.putMonitorarSala(widget.monitoraSala, widget.token).then((valueRequest) {
-//               if(valueRequest.statusCode == 200) { // if(valueRequest == "Monitoramento realizado com sucesso!") {
-//                 setState(() => widget.estadoDispositivo = value);
-//                 return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: const Color(0xff31cdba));
-//               }
-//               return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-//             });
-//             // selecionadoChanged(value);
-//           },
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-
-// Widget SwitchWidget({required String titulo, required bool estadoDispositivo, required ValueChanged<bool> selecionadoChanged}){
-//   late MaterialStateProperty<Icon?> thumbIcon = MaterialStateProperty.resolveWith<Icon?>(
-//         (Set<MaterialState> states) {
-//       if (states.contains(MaterialState.selected)) {
-//         return Icon((titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: const Color(0xff31cdba));
-//       }
-//       return Icon((titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: const Color(0xff9fbed1));
-//     },
-//   );
-//   return Column(
-//     children: [
-//       Text(titulo, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black)),
-//       Switch(
-//         value: estadoDispositivo,
-//         activeColor: Colors.white,
-//         activeTrackColor: const Color(0xff31cdba),
-//         inactiveTrackColor: const Color(0xff9fbed1),
-//         thumbIcon: thumbIcon,
-//         onChanged: (value) async {
-//           selecionadoChanged(value);
-//         },
-//       ),
-//     ],
-//   );
-// }
-
 class SwitchWidget extends StatefulWidget {
   MonitoramentoLuzesModel monitoramentoLuzesModel;
   MonitoramentoCondicionadoresModel monitoramentoCondicionadoresModel;
@@ -98,12 +20,12 @@ class SwitchWidget extends StatefulWidget {
 
   SwitchWidget(
       {super.key,
-       required this.fToast,
-      required this.titulo,
-      required this.monitoramentoLuzesModel,
-      required this.monitoramentoCondicionadoresModel,
-      required this.salaProvider,
-      required this.token});
+        required this.fToast,
+        required this.titulo,
+        required this.monitoramentoLuzesModel,
+        required this.monitoramentoCondicionadoresModel,
+        required this.salaProvider,
+        required this.token});
 
   @override
   State<SwitchWidget> createState() => _SwitchWidgetState();
@@ -112,12 +34,14 @@ class SwitchWidget extends StatefulWidget {
 class _SwitchWidgetState extends State<SwitchWidget> {
   late MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel.empty();
   bool estadoDispositivo = false;
+  bool _isButtonEnabled = true; // Controle para toques repetidos
 
   @override
-  initState() {
+  void initState() {
+    super.initState();
     estadoDispositivo = (widget.titulo == "Luzes")
-      ?widget.monitoramentoLuzesModel.estado
-      :widget.monitoramentoCondicionadoresModel.estado;
+        ? widget.monitoramentoLuzesModel.estado
+        : widget.monitoramentoCondicionadoresModel.estado;
   }
 
   monitorarLuzesSala(bool value) {
@@ -140,46 +64,101 @@ class _SwitchWidgetState extends State<SwitchWidget> {
     widget.monitoramentoCondicionadoresModel.estado = value;
   }
 
-  late WidgetStateProperty<Icon?> thumbIcon = WidgetStateProperty.resolveWith<Icon?>(
-      (Set<WidgetState> states) {
-        if (states.contains(WidgetState.selected)) {
-          return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: Color(0xff31cdba));
-        }
-        return Icon((widget.titulo == "Luzes")?Icons.lightbulb:Icons.thermostat, color: Color(0xff9fbed1));
-    },
-  );
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(widget.titulo, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black)),
-        Switch(
-          value: estadoDispositivo,
-          activeColor: Colors.white,
-          activeTrackColor: Color(0xff31cdba),
-          inactiveTrackColor: Color(0xff9fbed1),
-          thumbIcon: thumbIcon,
-          onChanged: (value) async {
-            (widget.titulo == "Luzes") ? monitorarLuzesSala(value) : monitorarCondicionadoresSala(value);
+        Text(
+            widget.titulo,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)
+        ),
+        const SizedBox(height: 8),
+        // Substituindo o Switch por um botão personalizado maior
+        Container(
+          // Tornando o botão maior
+          width: 60,  // Aumentado para ser maior
+          height: 60, // Aumentado para ser maior
+          decoration: BoxDecoration(
+            color: estadoDispositivo ? Color(0xff31cdba) : Color(0xff9fbed1),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(15),
+              onTap: _isButtonEnabled ? () async {
+                if (!_isButtonEnabled) return;
 
-            await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
-              if(valueRequest.statusCode == 200) {
-                estadoDispositivo = value;
-                return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: Color(0xff31cdba));
-              } else if(valueRequest.statusCode == 401) {
-                AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
-                authLocalDatasource.setCurrentUser(AuthResponseModel.empty());
-                return Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AuthPage()),
+                setState(() {
+                  _isButtonEnabled = false; // Desabilita o botão para evitar múltiplos toques
+                });
+
+                final novoEstado = !estadoDispositivo;
+                final acao = novoEstado ? "Ligando" : "Desligando";
+                final equipamento = widget.titulo == "Luzes" ? "luzes" : "ar-condicionado";
+
+                // Mostrar mensagem mais coerente durante a ação
+                showCustomToast(
+                    fToast: widget.fToast,
+                    titulo: "$acao $equipamento...",
+                    cor: Color(0xff31cdba)
                 );
-              }
-              // estadoDispositivo = value;
-              return showCustomToast(fToast: widget.fToast, titulo: valueRequest.mensagem, cor: Colors.red.shade400);
-            });
-            setState(() {});
-          },
+
+                (widget.titulo == "Luzes")
+                    ? monitorarLuzesSala(novoEstado)
+                    : monitorarCondicionadoresSala(novoEstado);
+
+                try {
+                  await widget.salaProvider.putMonitorarSala(monitoraSala, widget.token).then((valueRequest) {
+                    if (valueRequest.statusCode == 200) {
+                      setState(() {
+                        estadoDispositivo = novoEstado;
+                      });
+                      return showCustomToast(
+                          fToast: widget.fToast,
+                          titulo: valueRequest.mensagem,
+                          cor: Color(0xff31cdba)
+                      );
+                    } else if (valueRequest.statusCode == 401) {
+                      AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+                      authLocalDatasource.setCurrentUser(AuthResponseModel.empty());
+                      return Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AuthPage()),
+                      );
+                    }
+                    return showCustomToast(
+                        fToast: widget.fToast,
+                        titulo: valueRequest.mensagem,
+                        cor: Colors.red.shade400
+                    );
+                  });
+                } finally {
+                  // Garantir que o botão seja reabilitado mesmo se ocorrer exceções
+                  setState(() {
+                    _isButtonEnabled = true;
+                  });
+                }
+              } : null,
+              child: Center(
+                child: Icon(
+                  (widget.titulo == "Luzes")
+                      ? (estadoDispositivo ? Icons.lightbulb : Icons.lightbulb_outline)
+                      : (estadoDispositivo ? Icons.ac_unit : Icons.ac_unit_outlined),
+                  color: Colors.white,
+                  size: 35, // Ícone maior
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          estadoDispositivo ? "ON" : "OFF",
+          style: TextStyle(
+            color: estadoDispositivo ? Color(0xff31cdba) : Color(0xff9fbed1),
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
