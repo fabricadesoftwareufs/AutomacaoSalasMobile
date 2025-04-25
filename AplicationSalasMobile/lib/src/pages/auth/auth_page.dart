@@ -19,6 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   TextEditingController login = TextEditingController();
   TextEditingController senha = TextEditingController();
   bool isPasswordVisible = true;
+  bool _isButtonEnabled = true; // Controle para toques repetidos
   FToast fToast = FToast();
 
   @override
@@ -87,28 +88,42 @@ class _AuthPageState extends State<AuthPage> {
                                   padding: const EdgeInsets.symmetric(vertical: 15),
                                   backgroundColor: Color(0xff277ebe),
                                   shape: const RoundedRectangleBorder(
-                                      // side: BorderSide(color: Colors.black),
+                                    // side: BorderSide(color: Colors.black),
                                       borderRadius: BorderRadius.all(Radius.circular(5))),
                                 ),
-                                onPressed: () async {
+                                onPressed: _isButtonEnabled ? () async {
                                   if (login.text == "" || senha.text == "") {
                                     showCustomToast(fToast: fToast, titulo: "Preencha os campos!", cor: Colors.red.shade400);
                                   } else {
+                                    // Desabilita o botão para prevenir múltiplos toques
+                                    setState(() {
+                                      _isButtonEnabled = false;
+                                    });
+
                                     AuthRequestModel authRequestModel = AuthRequestModel(login: login.text, senha: senha.text);
 
                                     await Provider.of<AuthProvider>(context, listen: false).login(authRequestModel).then((value) {
                                       if (value == null) {
                                         showCustomToast(fToast: fToast, titulo: "CPF ou senha estam incorretos!", cor: Colors.red.shade400);
+                                        // Reabilita o botão em caso de erro
+                                        setState(() {
+                                          _isButtonEnabled = true;
+                                        });
+                                      } else {
+                                        AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
+                                        authLocalDatasource.setCurrentUser(value);
+                                        // authLocalDatasource.getCurrentUser().then((value) => print(value.token));
+                                        Navigator.of(context)
+                                            .pushReplacement(MaterialPageRoute(builder: (context) => NavigationApp(auth: value)));
                                       }
-
-                                      AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
-                                      authLocalDatasource.setCurrentUser(value!);
-                                      // authLocalDatasource.getCurrentUser().then((value) => print(value.token));
-                                      Navigator.of(context)
-                                          .pushReplacement(MaterialPageRoute(builder: (context) => NavigationApp(auth: value)));
+                                    }).catchError((error) {
+                                      // Reabilita o botão em caso de erro na requisição
+                                      setState(() {
+                                        _isButtonEnabled = true;
+                                      });
                                     });
                                   }
-                                },
+                                } : null, // Botão fica desabilitado quando _isButtonEnabled for false
                                 child: const Text("ENTRAR", style: TextStyle(color: Colors.white))),
                           ),
                         ],
