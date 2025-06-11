@@ -30,24 +30,47 @@ class CardInfoReserva extends StatefulWidget {
 class _CardInfoReservaState extends State<CardInfoReserva> {
   late MonitorarSalaRequestModel monitoraSala = MonitorarSalaRequestModel.empty();
 
+  // Getter para verificar se a reserva está cancelada baseado no status real
+  bool get isReservaCancelada => widget.reservasUsuario.horarioSala.status == "CANCELADA";
+
   monitorarLuzesSala() {
     monitoraSala = MonitorarSalaRequestModel(
-      id: widget.reservasUsuario.monitoramentoLuzes.id,
-      equipamentoId: widget.reservasUsuario.monitoramentoLuzes.equipamentoId,
-      estado: widget.reservasUsuario.monitoramentoLuzes.estado,
-      salaId: widget.reservasUsuario.monitoramentoLuzes.equipamentoNavigationModel.sala,
-      salaParticula: widget.reservasUsuario.monitoramentoLuzes.salaParticular
+        id: widget.reservasUsuario.monitoramentoLuzes.id,
+        equipamentoId: widget.reservasUsuario.monitoramentoLuzes.idEquipamento,
+        estado: widget.reservasUsuario.monitoramentoLuzes.estado,
+        salaId: widget.reservasUsuario.monitoramentoLuzes.equipamentoNavigationModel.sala,
+        salaParticula: widget.reservasUsuario.monitoramentoLuzes.salaParticular
     );
   }
 
   monitorarCondicionadoresSala() {
     monitoraSala = MonitorarSalaRequestModel(
-      id: widget.reservasUsuario.monitoramentoCondicionadores.id,
-      equipamentoId: widget.reservasUsuario.monitoramentoCondicionadores.equipamentoId,
-      estado: widget.reservasUsuario.monitoramentoCondicionadores.estado,
-      salaId: widget.reservasUsuario.monitoramentoCondicionadores.equipamentoNavigationModel.sala,
-      salaParticula: widget.reservasUsuario.monitoramentoCondicionadores.salaParticular
+        id: widget.reservasUsuario.monitoramentoCondicionadores.id,
+        equipamentoId: widget.reservasUsuario.monitoramentoCondicionadores.idEquipamento,
+        estado: widget.reservasUsuario.monitoramentoCondicionadores.estado,
+        salaId: widget.reservasUsuario.monitoramentoCondicionadores.equipamentoNavigationModel.sala,
+        salaParticula: widget.reservasUsuario.monitoramentoCondicionadores.salaParticular
     );
+  }
+
+  Future<void> alternarReserva() async {
+    if (isReservaCancelada) {
+      final response = await widget.reservaProvider.aprovarReservaUsuario(widget.reservasUsuario.horarioSala.id);
+      if (response.statusCode == 200) {
+        widget.altereEstado(widget.reservasUsuario);
+        showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: const Color(0xff277ebe));
+      } else {
+        showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: Colors.red.shade400);
+      }
+    } else {
+      final response = await widget.reservaProvider.cancelarReservaUsuario(widget.reservasUsuario.horarioSala.id);
+      if (response.statusCode == 200) {
+        widget.altereEstado(widget.reservasUsuario);
+        showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: const Color(0xff31cdba));
+      } else {
+        showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: Colors.red.shade400);
+      }
+    }
   }
 
   @override
@@ -82,22 +105,25 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                   ],
                 ),
-                SwitchWidget(
-                  titulo: "Luzes",
-                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  salaProvider: widget.salaProvider,
-                  token: widget.token,
-                  fToast: widget.fToast,
-                ),
-                SwitchWidget(
-                  titulo: "Ar-Condicionado",
-                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  salaProvider: widget.salaProvider,
-                  token: widget.token,
-                  fToast: widget.fToast,
-                ),
+                // Condicionalmente exibe os switches apenas quando a reserva não está cancelada
+                if (!isReservaCancelada) ...[
+                  SwitchWidget(
+                    titulo: "Luzes",
+                    monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                    monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                    salaProvider: widget.salaProvider,
+                    token: widget.token,
+                    fToast: widget.fToast,
+                  ),
+                  SwitchWidget(
+                    titulo: "Ar-Condicionado",
+                    monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                    monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                    salaProvider: widget.salaProvider,
+                    token: widget.token,
+                    fToast: widget.fToast,
+                  ),
+                ],
               ],
             ),
             Divider(
@@ -112,29 +138,16 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                         .horarioSala.horario_final.substring(0, 5)} h",
                     style: const TextStyle(fontSize: 17)),
                 ElevatedButton(
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    backgroundColor: WidgetStateProperty.all(Colors.red.shade400),
+                    backgroundColor: isReservaCancelada ? Colors.blue.shade400 : Colors.red.shade400,
                   ),
-                  onPressed: () async {
-                    await widget.reservaProvider
-                        .cancelarReservaUsuario(widget.reservasUsuario.horarioSala.id)
-                        .then((value) {
-                          if(value.statusCode == 200) {
-                            widget.altereEstado(widget.reservasUsuario);
-                            return showCustomToast(fToast: widget.fToast, titulo: value.mensagem, cor: const Color(0xff31cdba));
-                          }
-                            return showCustomToast(fToast: widget.fToast, titulo: value.mensagem, cor: Colors.red.shade400);
-                        }
-                    );
-                  },
-                  child: const Text(
-                    'Cancelar',
-                    style: TextStyle(color: Colors.white),
+                  onPressed: alternarReserva,
+                  child: Text(
+                    isReservaCancelada ? 'Ativar' : 'Cancelar',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 )
               ],

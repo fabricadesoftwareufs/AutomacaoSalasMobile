@@ -8,6 +8,8 @@ abstract class IReservaDatasource {
   Future<List<ReservaUsuarioResponseModel>> getReservaUsuario(String diaSemana, int idUsuario);
 
   Future<StatusCodeResponse> cancelarReserva(int idReserva, ReservaProvider reservaProvider);
+
+  Future<StatusCodeResponse> aprovarReserva(int idReserva, ReservaProvider reservaProvider);
 }
 
 class ReservaDataSourceImpl extends IReservaDatasource {
@@ -29,7 +31,7 @@ class ReservaDataSourceImpl extends IReservaDatasource {
   @override
   Future<StatusCodeResponse> cancelarReserva(int idReserva,ReservaProvider reservaProvider) async {
     try {
-      Response res = await dio.delete("/HorarioSala/cancelarReserva/$idReserva");
+      Response res = await dio.put("/HorarioSala/cancelarReserva/$idReserva");
       reservaProvider.listaReservasUsuario.removeWhere((element) => element.horarioSala.id == idReserva);
       return StatusCodeResponse(statusCode: 200, mensagem: res.data["message"]); // res.data["message"];
     } on DioException catch (e) {
@@ -39,6 +41,22 @@ class ReservaDataSourceImpl extends IReservaDatasource {
         return StatusCodeResponse(statusCode: 500, mensagem: e.response?.data['message']); // e.response?.data['message'];
       }
       return StatusCodeResponse(statusCode: 500, mensagem: "Reserva não pode ser cancelada!");
+    }
+  }
+
+  @override
+  Future<StatusCodeResponse> aprovarReserva(int idReserva,ReservaProvider reservaProvider) async {
+    try {
+      Response res = await dio.put("/HorarioSala/aprovarReserva/$idReserva");
+      reservaProvider.listaReservasUsuario.removeWhere((element) => element.horarioSala.id == idReserva);
+      return StatusCodeResponse(statusCode: 200, mensagem: res.data["message"]); // res.data["message"];
+    } on DioException catch (e) {
+      if(e.response?.statusCode == 401) {
+        return StatusCodeResponse(statusCode: 401, mensagem: "Sem permissão!");
+      } else if(e.response?.statusCode == 500) {
+        return StatusCodeResponse(statusCode: 500, mensagem: e.response?.data['message']); // e.response?.data['message'];
+      }
+      return StatusCodeResponse(statusCode: 500, mensagem: "Reserva não pode ser Aprovada!");
     }
   }
 }

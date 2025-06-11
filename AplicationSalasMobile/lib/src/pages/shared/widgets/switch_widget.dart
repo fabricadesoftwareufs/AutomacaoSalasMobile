@@ -47,20 +47,20 @@ class _SwitchWidgetState extends State<SwitchWidget> {
   monitorarLuzesSala(bool value) {
     monitoraSala = MonitorarSalaRequestModel(
         id: widget.monitoramentoLuzesModel.id,
-        equipamentoId: widget.monitoramentoLuzesModel.equipamentoId,
+        equipamentoId: widget.monitoramentoLuzesModel.idEquipamento,
         estado: value,
         salaId: widget.monitoramentoLuzesModel.equipamentoNavigationModel.sala,
-        salaParticula: widget.monitoramentoLuzesModel.estado);
+        salaParticula: widget.monitoramentoLuzesModel.salaParticular);
     widget.monitoramentoLuzesModel.estado = value;
   }
 
   monitorarCondicionadoresSala(bool value) {
     monitoraSala = MonitorarSalaRequestModel(
         id: widget.monitoramentoCondicionadoresModel.id,
-        equipamentoId: widget.monitoramentoCondicionadoresModel.equipamentoId,
+        equipamentoId: widget.monitoramentoCondicionadoresModel.idEquipamento,
         estado: value,
         salaId: widget.monitoramentoCondicionadoresModel.equipamentoNavigationModel.sala,
-        salaParticula: widget.monitoramentoCondicionadoresModel.estado);
+        salaParticula: widget.monitoramentoCondicionadoresModel.salaParticular);
     widget.monitoramentoCondicionadoresModel.estado = value;
   }
 

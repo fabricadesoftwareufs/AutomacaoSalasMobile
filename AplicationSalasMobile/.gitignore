@@ -46,3 +46,6 @@ app.*.map.json
 
 # Ignore .env file
 *.env
+
+# DevTools settings (personal preferences)
+devtools_options.yaml
