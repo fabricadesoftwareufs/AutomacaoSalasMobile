@@ -3,12 +3,12 @@ import 'package:salas_mobile/src/models/equipamento_navigation_model.dart';
 class MonitoramentoCondicionadoresModel {
   final int id;
   bool estado;
-  final int idEquipamento; // MUDANÇA: equipamentoId -> idEquipamento
-  final int idOperacao; // NOVO CAMPO
-  final String dataHora; // NOVO CAMPO
-  final int idUsuario; // NOVO CAMPO
-  final int temperatura; // NOVO CAMPO
-  final bool salaParticular; // MUDANÇA: agora pode ser null
+  final int idEquipamento;
+  final int idOperacao;
+  final String dataHora;
+  final int idUsuario;
+  final int temperatura;
+  final bool salaParticular;
   final EquipamentoNavigationModel equipamentoNavigationModel;
 
   MonitoramentoCondicionadoresModel({
@@ -27,13 +27,13 @@ class MonitoramentoCondicionadoresModel {
     return MonitoramentoCondicionadoresModel(
       id: map["id"],
       estado: map["estado"],
-      idEquipamento: map["idEquipamento"], // MUDANÇA
+      idEquipamento: map["idEquipamento"],
       idOperacao: map["idOperacao"] ?? 0,
       dataHora: map["dataHora"] ?? "",
       idUsuario: map["idUsuario"] ?? 0,
       temperatura: map["temperatura"] ?? 0,
       salaParticular: map["salaParticular"] ?? false,
-      equipamentoNavigationModel: map["idEquipamentoNavigation"] != null // MUDANÇA
+      equipamentoNavigationModel: map["idEquipamentoNavigation"] != null
           ? EquipamentoNavigationModel.fromJson(map["idEquipamentoNavigation"])
           : EquipamentoNavigationModel.empty(),
     );
@@ -43,13 +43,13 @@ class MonitoramentoCondicionadoresModel {
     return {
       'id': id,
       'estado': estado,
-      'idEquipamento': idEquipamento, // MUDANÇA
+      'idEquipamento': idEquipamento,
       'idOperacao': idOperacao,
       'dataHora': dataHora,
       'idUsuario': idUsuario,
       'temperatura': temperatura,
       'salaParticular': salaParticular,
-      'idEquipamentoNavigation': equipamentoNavigationModel.toJson(), // MUDANÇA
+      'idEquipamentoNavigation': equipamentoNavigationModel.toJson(),
     };
   }
 

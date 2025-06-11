@@ -56,7 +56,7 @@ class ReservaDataSourceImpl extends IReservaDatasource {
       } else if(e.response?.statusCode == 500) {
         return StatusCodeResponse(statusCode: 500, mensagem: e.response?.data['message']); // e.response?.data['message'];
       }
-      return StatusCodeResponse(statusCode: 500, mensagem: "Reserva não pode ser cancelada!");
+      return StatusCodeResponse(statusCode: 500, mensagem: "Reserva não pode ser Aprovada!");
     }
   }
 }

@@ -55,20 +55,16 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
 
   Future<void> alternarReserva() async {
     if (isReservaCancelada) {
-      // Aprovar reserva (estava cancelada)
       final response = await widget.reservaProvider.aprovarReservaUsuario(widget.reservasUsuario.horarioSala.id);
       if (response.statusCode == 200) {
-        // Notifica o widget pai para atualizar os dados
         widget.altereEstado(widget.reservasUsuario);
         showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: const Color(0xff277ebe));
       } else {
         showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: Colors.red.shade400);
       }
     } else {
-      // Cancelar reserva (estava aprovada)
       final response = await widget.reservaProvider.cancelarReservaUsuario(widget.reservasUsuario.horarioSala.id);
       if (response.statusCode == 200) {
-        // Notifica o widget pai para atualizar os dados
         widget.altereEstado(widget.reservasUsuario);
         showCustomToast(fToast: widget.fToast, titulo: response.mensagem, cor: const Color(0xff31cdba));
       } else {
@@ -109,22 +105,25 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
                   ],
                 ),
-                SwitchWidget(
-                  titulo: "Luzes",
-                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  salaProvider: widget.salaProvider,
-                  token: widget.token,
-                  fToast: widget.fToast,
-                ),
-                SwitchWidget(
-                  titulo: "Ar-Condicionado",
-                  monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
-                  monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
-                  salaProvider: widget.salaProvider,
-                  token: widget.token,
-                  fToast: widget.fToast,
-                ),
+                // Condicionalmente exibe os switches apenas quando a reserva não está cancelada
+                if (!isReservaCancelada) ...[
+                  SwitchWidget(
+                    titulo: "Luzes",
+                    monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                    monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                    salaProvider: widget.salaProvider,
+                    token: widget.token,
+                    fToast: widget.fToast,
+                  ),
+                  SwitchWidget(
+                    titulo: "Ar-Condicionado",
+                    monitoramentoLuzesModel: widget.reservasUsuario.monitoramentoLuzes,
+                    monitoramentoCondicionadoresModel: widget.reservasUsuario.monitoramentoCondicionadores,
+                    salaProvider: widget.salaProvider,
+                    token: widget.token,
+                    fToast: widget.fToast,
+                  ),
+                ],
               ],
             ),
             Divider(
@@ -147,7 +146,7 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                   ),
                   onPressed: alternarReserva,
                   child: Text(
-                    isReservaCancelada ? 'Aprovar' : 'Cancelar',
+                    isReservaCancelada ? 'Ativar' : 'Cancelar',
                     style: const TextStyle(color: Colors.white),
                   ),
                 )
