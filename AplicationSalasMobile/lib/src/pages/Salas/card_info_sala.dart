@@ -34,7 +34,7 @@ class _CardInfoSalaState extends State<CardInfoSala> {
   MonitorarSalaRequestModel monitorarLuzesSala() {
     return monitoraSala = MonitorarSalaRequestModel(
       id: widget.salasUsuario.monitoramentoLuzesModel.id,
-      equipamentoId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoId,
+      equipamentoId: widget.salasUsuario.monitoramentoLuzesModel.idEquipamento,
       estado: widget.salasUsuario.monitoramentoLuzesModel.estado,
       salaId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoNavigationModel.sala,
       salaParticula: widget.salasUsuario.monitoramentoLuzesModel.salaParticular
@@ -44,7 +44,7 @@ class _CardInfoSalaState extends State<CardInfoSala> {
   monitorarCondicionadoresSala() {
     monitoraSala = MonitorarSalaRequestModel(
       id: widget.salasUsuario.monitoramentoCondicionadoresModel.id,
-      equipamentoId: widget.salasUsuario.monitoramentoCondicionadoresModel.equipamentoId,
+      equipamentoId: widget.salasUsuario.monitoramentoCondicionadoresModel.idEquipamento,
       estado: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
       salaId: widget.salasUsuario.monitoramentoCondicionadoresModel.equipamentoNavigationModel.sala,
       salaParticula: widget.salasUsuario.monitoramentoCondicionadoresModel.salaParticular

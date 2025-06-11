@@ -57,7 +57,10 @@ class _SalasPageState extends State<SalasPage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: Container(alignment: Alignment.center, padding: EdgeInsets.only(top: 20),child: CircularProgressIndicator(color: Color(0xff277ebe))));
               }
-              if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
+              if (snapshot.hasError) {
+                print('Erro no snapshot: ${snapshot.error}');
+                return const Center(child: Text("Erro ao carregar"));
+              }
 
               List<SalasUsuarioResponseModel> salasUsuario = snapshot.data as List<SalasUsuarioResponseModel>;
 

@@ -21,9 +21,20 @@ class ReservaProvider extends ChangeNotifier {
     for (var element in listaReservasUsuario) {element.toJson();}
     IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
 
-    StatusCodeResponse deletarReserva = await reservasDataSource.cancelarReserva(idReserva, this);
+    StatusCodeResponse cancelarReserva = await reservasDataSource.cancelarReserva(idReserva, this);
 
     notifyListeners();
-    return deletarReserva;
+    return cancelarReserva;
+  }
+
+
+  Future<StatusCodeResponse> aprovarReservaUsuario(int idReserva) async {
+    for (var element in listaReservasUsuario) {element.toJson();}
+    IReservaDatasource reservasDataSource = ReservaDataSourceImpl(dio: dio);
+
+    StatusCodeResponse aprovarReserva = await reservasDataSource.aprovarReserva(idReserva, this);
+
+    notifyListeners();
+    return aprovarReserva;
   }
 }
