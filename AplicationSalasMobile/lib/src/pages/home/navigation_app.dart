@@ -2,6 +2,7 @@ import 'package:salas_mobile/src/models/auth_response_model.dart';
 import 'package:salas_mobile/src/pages/Reservas/menu_semanal.dart';
 import 'package:salas_mobile/src/pages/Salas/salas_page.dart';
 import 'package:flutter/material.dart';
+import '../user/user_info_page.dart';
 
 class NavigationApp extends StatefulWidget {
   final AuthResponseModel auth;
@@ -22,9 +23,21 @@ class _NavigationAppState extends State<NavigationApp> {
         appBar: AppBar(
           centerTitle: false,
           title: const Text('SmartSala', style: TextStyle(color: Colors.white)),
-          backgroundColor: Color(0xff277ebe),// Color(0xff3d31dd),
+          backgroundColor: const Color(0xff277ebe),
           elevation: 0,
-          shadowColor: Colors.red,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserInfoPage(auth: widget.auth),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         // backgroundColor: Color(0xff3d31dd),
         body: Stack(
