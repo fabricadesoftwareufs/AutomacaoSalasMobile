@@ -55,11 +55,16 @@ class UserInfoPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Tipo de Usuário: vou descobrir!',
+                    '${auth.organizacao}',
                     style: const TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
-                  //Text('Tipo de Usuário: ${auth.tipoUsuario}', style: const TextStyle(fontSize: 16)),
+                  const SizedBox(height: 10),
+                  Text(
+                    '${auth.tipodeUsuario}',
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
