@@ -49,3 +49,22 @@ app.*.map.json
 
 # DevTools settings (personal preferences)
 devtools_options.yaml
+
+# Flutter generated plugin registrant files
+**/generated_plugin_registrant.dart
+**/generated_plugin_registrant.cc
+**/generated_plugin_registrant.h
+**/GeneratedPluginRegistrant.java
+**/GeneratedPluginRegistrant.swift
+**/GeneratedPluginRegistrant.m
+
+# Platform-specific generated files
+**/windows/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugin_registrant.*
+**/macos/Flutter/GeneratedPluginRegistrant.*
+**/android/app/src/main/java/**/GeneratedPluginRegistrant.*
+
+# Web generated files
+**/web/flutter_service_worker.js
+**/web/manifest.json
+**/web/flutter_bootstrap.js
