@@ -14,7 +14,9 @@ import 'package:salas_mobile/src/providers/auth_provider.dart';
 import 'package:dotenv/dotenv.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -57,12 +59,65 @@ class MyApp extends StatelessWidget {
           "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),
           "/login": (_) => const AuthPage(),
         },
-        home: VerifyAuth(),
+        home: AuthWrapper(),
       ),
     );
   }
 }
 
+class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AuthProvider>(context, listen: false).initializeAuth();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        if (authProvider.isLoading) {
+          return Scaffold(
+            backgroundColor: const Color(0xfff9faf7),
+            body: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Image(
+                    image: AssetImage("assets/img/logo_provisoria.png"),
+                    width: 300,
+                  ),
+                  SizedBox(height: 20),
+                  Text("SmartSala", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+                  SizedBox(height: 40),
+                  CircularProgressIndicator(),
+                ],
+              ),
+            ),
+          );
+        }
+
+        if (authProvider.logado && authProvider.currentUser != null) {
+          return NavigationApp(auth: authProvider.currentUser!);
+        } else {
+          return const AuthPage();
+        }
+      },
+    );
+  }
+}
+
+// Mantenha a VerifyAuth original como backup se necessário
 class VerifyAuth extends StatefulWidget {
   const VerifyAuth({super.key});
 
@@ -87,7 +142,6 @@ class _VerifyAuthState extends State<VerifyAuth> {
     });
   }
 
-
   Future<AuthResponseModel> verify() async {
     AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
     return AuthResponseModel.empty();
@@ -109,21 +163,9 @@ class _VerifyAuthState extends State<VerifyAuth> {
             ),
             SizedBox(height: 20),
             Text("SmartSala", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500))
-            // SpinKitDualRing(color: Color(0xfff9faf7), size: 50)
           ],
         ),
       ),
     );
-    // return FutureBuilder(
-    //   future: verify(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState != ConnectionState.waiting) {
-    //       return snapshot.data?.id != 0 ? NavigationApp() : const AuthPage();//HomePage(authResponseModel: authResponseModel) : const AuthPage();
-    //     }
-    //
-    //     //TODO: fazer tela de splash aqui
-    //     return const Center(child: CircularProgressIndicator());
-    //   },
-    // );
   }
 }
