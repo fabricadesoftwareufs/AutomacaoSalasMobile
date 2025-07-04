@@ -2,6 +2,8 @@ import 'package:salas_mobile/src/models/auth_response_model.dart';
 import 'package:salas_mobile/src/pages/Reservas/menu_semanal.dart';
 import 'package:salas_mobile/src/pages/Salas/salas_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:salas_mobile/src/providers/theme_provider.dart';
 import '../user/user_info_page.dart';
 
 class NavigationApp extends StatefulWidget {
@@ -19,11 +21,11 @@ class _NavigationAppState extends State<NavigationApp> {
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-        backgroundColor: Color(0xff277ebe),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         appBar: AppBar(
           centerTitle: false,
           title: const Text('SmartSala', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color(0xff277ebe),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 0,
           actions: [
             IconButton(
@@ -39,18 +41,16 @@ class _NavigationAppState extends State<NavigationApp> {
             ),
           ],
         ),
-        // backgroundColor: Color(0xff3d31dd),
         body: Stack(
           children: [
             Container(
               height: 100,
-              color: Color(0xff277ebe),
+              color: Theme.of(context).appBarTheme.backgroundColor,
             ),
             Container(
-              decoration: const BoxDecoration(
-                  color: Color(0xfff9faf7),
-                  // borderRadius: BorderRadius.all(Radius.circular(25))
-                  borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20),
                   )
@@ -58,111 +58,40 @@ class _NavigationAppState extends State<NavigationApp> {
               child: TabBarView(
                 children: <Widget>[
                   SalasPage(auth: widget.auth),
-                  MenuSemanal(),
+                  const MenuSemanal(),
                 ],
               ),
             ),
           ],
         ),
         bottomNavigationBar: Container(
-          // padding: EdgeInsets.all(10),
           height: 65,
           decoration: BoxDecoration(
-            color: Colors.grey.shade500,//Color(0xff3d31dd),
-            // borderRadius: BorderRadius.only(
-            //   topLeft: Radius.circular(20),
-            //   topRight: Radius.circular(20),
-            // ),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xff2d2d2d)
+                : Colors.grey.shade500,
           ),
           child: TabBar(
             dividerColor: Colors.transparent,
             labelPadding: EdgeInsets.zero,
-            // padding: EdgeInsets.all(10),
-            indicator: const BoxDecoration(
-              color: Color(0xff277ebe),//Colors.lightBlue,
-              // borderRadius: BorderRadius.all(Radius.circular(10))
-              // borderRadius: BorderRadius.only(
-              //   topLeft: Radius.circular(10),
-              //   topRight: Radius.circular(10),
-              // ),
+            indicator: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
             ),
-            unselectedLabelColor: Colors.black38,
+            unselectedLabelColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white54
+                : Colors.black38,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: <Widget>[
+            tabs: const <Widget>[
               Tab(
-                child: Container(
-                  // decoration: const BoxDecoration(
-                  //   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  // ),
-                  child: Center(child: Text('Minhas Salas', style: TextStyle(color: Colors.white))),
-                ),
-                // icon: Icon(FontAwesomeIcons.house),
+                child: Center(child: Text('Minhas Salas', style: TextStyle(color: Colors.white))),
               ),
               Tab(
-                child: Container(
-                  // decoration: const BoxDecoration(
-                  //   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  // ),
-                  child: Center(child: Text('Minhas Reservas', style: TextStyle(color: Colors.white))),
-                ),
-                // icon: Icon(FontAwesomeIcons.ticket),
+                child: Center(child: Text('Minhas Reservas', style: TextStyle(color: Colors.white))),
               ),
             ],
           ),
         ),
       ),
     );
-    // return DefaultTabController(
-    //   initialIndex: 0,
-    //   length: 2,
-    //   child: MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     home: Scaffold(
-    //       appBar: AppBar(
-    //         title: const Text('SalasUfs'),
-    //         backgroundColor: Color(0xff3d31dd),
-    //         bottom: TabBar(
-    //           dividerColor: Colors.transparent,
-    //           labelPadding: EdgeInsets.zero,
-    //           indicator: const BoxDecoration(
-    //             color: Colors.lightBlue,
-    //             borderRadius: BorderRadius.only(
-    //               topLeft: Radius.circular(10),
-    //               topRight: Radius.circular(10),
-    //             ),
-    //           ),
-    //           indicatorSize: TabBarIndicatorSize.tab,
-    //           tabs: <Widget>[
-    //             Tab(
-    //               child: Container(
-    //                 decoration: const BoxDecoration(
-    //                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-    //                 ),
-    //                 child: Center(child: Text('Minhas Salas')),
-    //               ),
-    //             ),
-    //             Tab(
-    //               child: Container(
-    //                 decoration: const BoxDecoration(
-    //                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-    //                 ),
-    //                 child: Center(child: Text('Minhas Reservas')),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       body: Container(
-    //         color: const Color(0xfff9faf7), // Colors.grey.shade200,
-    //         child: const TabBarView(
-    //           children: <Widget>[
-    //             SalasPage(),
-    //             MenuSemanal(),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

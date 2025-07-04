@@ -42,45 +42,51 @@ class _SalasPageState extends State<SalasPage> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: ()async{
         setState(() {});
-        // refreshSalas();
       },
       child: ListView(
-        children: [
-          FutureBuilder(
-            future: verify().then((value) {
-              return salaProvider!.salasUsuario(value!.id);
-            }),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Container(alignment: Alignment.center, padding: EdgeInsets.only(top: 20),child: CircularProgressIndicator(color: Color(0xff277ebe))));
-              }
-              if (snapshot.hasError) {
-                return const Center(child: Text("Erro ao carregar"));
-              }
+          children: [
+            FutureBuilder(
+                future: verify().then((value) {
+                  return salaProvider!.salasUsuario(value!.id);
+                }),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(top: 20),
+                        child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary)
+                    ));
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text(
+                      "Erro ao carregar",
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    ));
+                  }
 
-              List<SalasUsuarioResponseModel> salasUsuario = snapshot.data as List<SalasUsuarioResponseModel>;
+                  List<SalasUsuarioResponseModel> salasUsuario = snapshot.data as List<SalasUsuarioResponseModel>;
 
-              return (salasUsuario.isEmpty)
-                ?Empty_Widget(titulo: 'Sem salas', descricao: 'Você ainda não tem salas cadastradas!')
-                :SingleChildScrollView(
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: [
-                        for (int i = 0; i < salasUsuario.length; i++)
-                        ...[
-                          CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: widget.auth.token),
-                        ]
-                      ],
+                  return (salasUsuario.isEmpty)
+                      ? Empty_Widget(titulo: 'Sem salas', descricao: 'Você ainda não tem salas cadastradas!')
+                      : SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: [
+                          for (int i = 0; i < salasUsuario.length; i++)
+                            ...[
+                              CardInfoSala(salasUsuario: salasUsuario[i], salaProvider: salaProvider!, token: widget.auth.token),
+                            ]
+                        ],
+                      ),
                     ),
-                  ),
-                );
-            }
-          ),
-        ]
+                  );
+                }
+            ),
+          ]
       ),
     );
   }

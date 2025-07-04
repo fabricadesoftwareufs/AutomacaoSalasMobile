@@ -4,6 +4,7 @@ import 'package:salas_mobile/src/models/auth_response_model.dart';
 import 'package:salas_mobile/src/pages/home/navigation_app.dart';
 import 'package:salas_mobile/src/providers/reserva_provider.dart';
 import 'package:salas_mobile/src/providers/sala_provider.dart';
+import 'package:salas_mobile/src/providers/theme_provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,22 +45,57 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider(dio)),
-        ChangeNotifierProvider<SalaProvider>(create: (_) => SalaProvider(dio)),
-        ChangeNotifierProvider<ReservaProvider>(create: (_) => ReservaProvider(dio))
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider(dio)),
+        ChangeNotifierProvider(create: (_) => SalaProvider(dio)),
+        ChangeNotifierProvider(create: (_) => ReservaProvider(dio))
       ],
-      child: MaterialApp(
-        color: Colors.red,
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        debugShowCheckedModeBanner: false,
-        title: 'Salas Ufs',
-        theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-        routes: {
-          "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),
-          "/login": (_) => const AuthPage(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            color: Colors.red,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            debugShowCheckedModeBanner: false,
+            title: 'Salas Ufs',
+            themeMode: themeProvider.themeMode,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              useMaterial3: true,
+              brightness: Brightness.light,
+              scaffoldBackgroundColor: const Color(0xfff9faf7),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xff277ebe),
+                foregroundColor: Colors.white,
+              ),
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xff277ebe),
+                brightness: Brightness.light,
+              ),
+              cardColor: Colors.white,
+            ),
+            darkTheme: ThemeData(
+              primarySwatch: Colors.blue,
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              scaffoldBackgroundColor: const Color(0xff121212),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xff1e1e1e),
+                foregroundColor: Colors.white,
+              ),
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xff277ebe),
+                brightness: Brightness.dark,
+              ),
+              cardColor: const Color(0xff1e1e1e),
+            ),
+            routes: {
+              "/home": (_) => NavigationApp(auth: AuthResponseModel.empty()),
+              "/login": (_) => const AuthPage(),
+            },
+            home: const AuthWrapper(),
+          );
         },
-        home: AuthWrapper(),
       ),
     );
   }
@@ -87,20 +123,25 @@ class _AuthWrapperState extends State<AuthWrapper> {
       builder: (context, authProvider, child) {
         if (authProvider.isLoading) {
           return Scaffold(
-            backgroundColor: const Color(0xfff9faf7),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Image(
+                children: [
+                  const Image(
                     image: AssetImage("assets/img/logo_provisoria.png"),
                     width: 300,
                   ),
-                  SizedBox(height: 20),
-                  Text("SmartSala", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
-                  SizedBox(height: 40),
-                  CircularProgressIndicator(),
+                  const SizedBox(height: 20),
+                  Text(
+                    "SmartSala",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  )
                 ],
               ),
             ),
@@ -113,59 +154,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
           return const AuthPage();
         }
       },
-    );
-  }
-}
-
-// Mantenha a VerifyAuth original como backup se necessário
-class VerifyAuth extends StatefulWidget {
-  const VerifyAuth({super.key});
-
-  @override
-  State<VerifyAuth> createState() => _VerifyAuthState();
-}
-
-class _VerifyAuthState extends State<VerifyAuth> {
-  late AuthResponseModel authResponseModel;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 3)).then((value) {
-      verify().then((value) {
-        (value.id != 0) ? Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (ctx) => NavigationApp(auth: value))
-        ) : Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (ctx) => const AuthPage())
-        );
-      });
-    });
-  }
-
-  Future<AuthResponseModel> verify() async {
-    AuthLocalDatasource authLocalDatasource = AuthLocalDatasource();
-    return AuthResponseModel.empty();
-    // return authResponseModel = (await authLocalDatasource.getCurrentUser());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xfff9faf7),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Image(
-              image: AssetImage("assets/img/logo_provisoria.png"),
-              width: 300,
-            ),
-            SizedBox(height: 20),
-            Text("SmartSala", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500))
-          ],
-        ),
-      ),
     );
   }
 }

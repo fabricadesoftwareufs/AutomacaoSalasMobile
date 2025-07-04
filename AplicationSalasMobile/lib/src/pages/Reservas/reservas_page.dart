@@ -37,9 +37,7 @@ class _ReservasPageState extends State<ReservasPage> {
     reservaProvider ??= Provider.of<ReservaProvider>(context, listen: false);
     if (inicializado == false) {
       fToast.init(context);
-      // getReservasDia();
       inicializado = true;
-      // setState(() {});
     }
   }
 
@@ -54,69 +52,88 @@ class _ReservasPageState extends State<ReservasPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("restatou");
     return Container(
-      // color: Colors.grey.shade200,
-      // alignment: Alignment.center,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: RefreshIndicator(
-        color: Theme.of(context).colorScheme.secondary,
-        onRefresh: ()async{
+        color: Theme.of(context).colorScheme.primary,
+        onRefresh: () async {
           setState(() {});
-          // refreshReservas();
         },
         child: ListView(
-          shrinkWrap: true,
-          children: [
-            FutureBuilder(
-              future: getReservasDia(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: Container(alignment: Alignment.center, padding: EdgeInsets.only(top: 20),child: CircularProgressIndicator(color: Color(0xff277ebe))));
-                }
-                if (snapshot.hasError) return const Center(child: Text("Erro ao carregar"));
+            shrinkWrap: true,
+            children: [
+              FutureBuilder(
+                  future: getReservasDia(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                          child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.only(top: 20),
+                              child: CircularProgressIndicator(
+                                  color: Theme.of(context).colorScheme.primary
+                              )
+                          )
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                              "Erro ao carregar",
+                              style: TextStyle(color: Theme.of(context).colorScheme.onSurface)
+                          )
+                      );
+                    }
 
-                List<ReservaUsuarioResponseModel> listaReservasUsuario = snapshot.data as List<ReservaUsuarioResponseModel>;
+                    List<ReservaUsuarioResponseModel> listaReservasUsuario = snapshot.data as List<ReservaUsuarioResponseModel>;
 
-                return (listaReservasUsuario.isEmpty)
-                    ?Container(padding: EdgeInsets.all(20), child: Empty_Widget(titulo: 'Sem reservas', descricao: 'Você não possui reservas para este dia!'))
-                    :Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                    ...listaReservasUsuario
-                    .map((e) => CardInfoReserva(
-                  reservasUsuario: e,
-                  salaProvider: widget.salaProvider,
-                  reservaProvider: reservaProvider!,
-                  token: authResponseModel.token,
-                  fToast: fToast, altereEstado: (void value) => setState(() { listaReservasUsuario.remove(e);}),
-                  ))
-                  
-                  ],
-                );
-                // return Consumer<ReservaProvider>(
-                //   builder: (context, reservaProvider, child) {
-                //     if(reservaProvider.listaReservasUsuario.isEmpty) {
-                //       return Empty_Widget(titulo: 'Sem reservas', descricao: 'Você ainda não tem reservas para este dia!');
-                //     }
-                //     return Column(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       children: [
-                //         ...reservaProvider.listaReservasUsuario
-                //             .map((e) => CardInfoReserva(
-                //           reservasUsuario: e,
-                //           salaProvider: widget.salaProvider,
-                //           reservaProvider: reservaProvider,
-                //           token: authResponseModel.token,
-                //           fToast: fToast,
-                //         ))
-                //             .toList()
-                //       ],
-                //     );
-                //   },
-                // );
-              }
-            ),
-          ]
+                    return (listaReservasUsuario.isEmpty)
+                        ? Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sem reservas',
+                              style: TextStyle(
+                                fontSize: 21,
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Você não possui reservas para este dia!',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ...listaReservasUsuario
+                            .map((e) => CardInfoReserva(
+                          reservasUsuario: e,
+                          salaProvider: widget.salaProvider,
+                          reservaProvider: reservaProvider!,
+                          token: authResponseModel.token,
+                          fToast: fToast,
+                          altereEstado: (void value) => setState(() {
+                            listaReservasUsuario.remove(e);
+                          }),
+                        ))
+                      ],
+                    );
+                  }
+              ),
+            ]
         ),
       ),
     );
