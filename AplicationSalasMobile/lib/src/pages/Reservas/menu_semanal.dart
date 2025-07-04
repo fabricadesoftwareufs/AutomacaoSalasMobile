@@ -37,245 +37,52 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    // return DefaultTabController(
-    //   length: 7,
-    //   child: Column(
-    //     children: [
-    //       Stack(
-    //         children: [
-    //           Container(
-    //             height: 100,
-    //             color: Color(0xfff9faf7),
-    //           ),
-    //           Material(
-    //             // color: Colors.lightBlue,
-    //             borderRadius: BorderRadius.only(
-    //               topRight: Radius.circular(10),
-    //               topLeft: Radius.circular(10)
-    //             ),
-    //             child: TabBar(
-    //               controller: _nestedTabController,
-    //               indicatorColor: Colors.lightBlue,
-    //               labelColor: Colors.lightBlue,
-    //               unselectedLabelColor: Colors.black54,
-    //               isScrollable: true,
-    //               // splashBorderRadius: BorderRadius.circular(50),
-    //               // indicator: BoxDecoration( // indivodual
-    //               // color: Colors.lightBlue,
-    //               // borderRadius: BorderRadius.circular(10),
-    //               // ),
-    //               // indicator: ShapeDecoration(
-    //               //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))
-    //               //   ,color: Colors.lightBlue,
-    //               // ),
-    //               tabs: <Widget>[
-    //                 Tab(
-    //                   text: "SEG",
-    //                 ),
-    //                 Tab(
-    //                   text: "TER",
-    //                 ),
-    //                 Tab(
-    //                   text: "QUA",
-    //                 ),
-    //                 Tab(
-    //                   text: "QUI",
-    //                 ),
-    //                 Tab(
-    //                   text: "SEX",
-    //                 ),
-    //                 Tab(
-    //                   text: "SÁB",
-    //                 ),
-    //                 Tab(
-    //                   text: "DOM",
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       Expanded(
-    //         child: TabBarView(
-    //           controller: _nestedTabController,
-    //           children: <Widget>[
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
-    //             ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    // );
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     children: [
-    //       Container(
-    //         alignment: Alignment.center,
-    //         height: 60,
-    //         padding: const EdgeInsets.only(left: 8, top: 8),
-    //         child: ListView(
-    //           scrollDirection: Axis.horizontal,
-    //           shrinkWrap: true,
-    //           children: [
-    //             Column(
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               children: [
-    //                 Row(
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                   children: [
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "S", cor: Colors.lightBlue),
-    //                       onTap: () {
-    //                         active = 0;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "T"),
-    //                       onTap: () {
-    //                         active = 1;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "Q"),
-    //                       onTap: () {
-    //                         active = 2;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "Q"),
-    //                       onTap: () {
-    //                         active = 3;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "S"),
-    //                       onTap: () {
-    //                         active = 4;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "S"),
-    //                       onTap: () {
-    //                         active = 5;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                     InkWell(
-    //                       child: CircleDayWeek(day: "D"),
-    //                       onTap: () {
-    //                         active = 6;
-    //                         setState(() { });
-    //                       },
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ],
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       Container(
-    //           height: screenHeight,
-    //           alignment: Alignment.topLeft,
-    //           padding: const EdgeInsets.all(5),
-    //           child:
-    //           (active==0)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'seg')
-    //           :(active==1)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'ter')
-    //           :(active==2)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'qua')
-    //           :(active==3)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'qui')
-    //           :(active==4)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'sex')
-    //           :(active==5)
-    //             ?ReservasPage(salaProvider: salaProvider, filtroDia: 'sab')
-    //             :ReservasPage(salaProvider: salaProvider, filtroDia: 'dom')
-    //       ),
-    //     ],
-    //   ),
-    // );
+
     return Scaffold(
-      backgroundColor: Color(0xff277ebe),
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).appBarTheme.backgroundColor
+          : Theme.of(context).appBarTheme.backgroundColor,
       appBar: TabBar(
         controller: _nestedTabController,
-        indicatorColor: Colors.grey.shade500,
+        indicatorColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade300
+            : Colors.grey.shade500,
         labelColor: Colors.white,
-        unselectedLabelColor: Colors.white38, // Colors.black54,
+        unselectedLabelColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white60
+            : Colors.white38,
         isScrollable: true,
-        indicator: DotIndicator(color: Color(0xfff9faf7), radius: 5),
-        indicatorPadding: EdgeInsets.only(bottom: 4),
-        // labelPadding: EdgeInsets.all(5),
-        // splashBorderRadius: BorderRadius.circular(50),
-        // indicator: BoxDecoration( // indivodual
-        //   color: Colors.lightBlue,
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
-        // indicator: ShapeDecoration(
-        //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))
-        //   ,color: Colors.lightBlue,
-        // ),
-        tabs: <Widget>[
+        indicator: DotIndicator(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : const Color(0xfff9faf7),
+            radius: 5
+        ),
+        indicatorPadding: const EdgeInsets.only(bottom: 4),
+        tabs: const <Widget>[
+          Tab(text: "SEG"),
+          Tab(text: "TER"),
+          Tab(text: "QUA"),
+          Tab(text: "QUI"),
+          Tab(text: "SEX"),
           Tab(
-            text: "SEG",
+            child: Text("SAB"),
           ),
-          Tab(
-            text: "TER",
-          ),
-          Tab(
-            text: "QUA",
-          ),
-          Tab(
-            text: "QUI",
-          ),
-          Tab(
-            text: "SEX",
-          ),
-          Tab(
-            // text: "SÁB",
-            child: Container(
-              // padding: EdgeInsets.all(10),
-              // height: 50,
-              decoration: BoxDecoration(
-                // color: Colors.red,
-                  // borderRadius: BorderRadius.circular(100)
-              ),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text("SAB"),
-              ),
-            ),
-          ),
-          Tab(
-            text: "DOM",
-          ),
+          Tab(text: "DOM"),
         ],
       ),
       body: Stack(
         children: [
           Container(
             height: 100,
-            color: Color(0xff277ebe),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Theme.of(context).colorScheme.primary,
           ),
           Container(
-            decoration: const BoxDecoration(
-                color: Color(0xfff9faf7),
-                // borderRadius: BorderRadius.all(Radius.circular(25))
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20),
                   topLeft: Radius.circular(20),
                 )
@@ -294,62 +101,8 @@ class _MenuSemanalState extends State<MenuSemanal> with SingleTickerProviderStat
             ),
           ),
         ],
-      ),);
-    // HERE
-    // body: Column(
-    //   mainAxisSize: MainAxisSize.min,
-    //     children: <Widget>[
-    //       TabBar(
-    //         controller: _nestedTabController,
-    //         indicatorColor: Colors.blue,
-    //         labelColor: Colors.blue,
-    //         unselectedLabelColor: Colors.black54,
-    //         isScrollable: true,
-    //         tabs: const <Widget>[
-    //           Tab(
-    //             text: "SEG",
-    //           ),
-    //           Tab(
-    //             text: "TER",
-    //           ),
-    //           Tab(
-    //             text: "QUA",
-    //           ),
-    //           Tab(
-    //             text: "QUI",
-    //           ),
-    //           Tab(
-    //             text: "SEX",
-    //           ),
-    //           Tab(
-    //             text: "SÁB",
-    //           ),
-    //           Tab(
-    //             text: "DOM",
-    //           ),
-    //         ],
-    //       ),
-    //       SingleChildScrollView(
-    //         child: SizedBox(
-    //           height: screenHeight,
-    //           // margin: EdgeInsets.only(left: 16.0, right: 16.0),
-    //           child: TabBarView(
-    //             controller: _nestedTabController,
-    //             children: <Widget>[
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'seg',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'ter',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'qua',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'qui',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'sex',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'sab',),
-    //               ReservasPage(salaProvider: salaProvider, filtroDia: 'dom',),
-    //             ],
-    //           ),
-    //         ),
-    //       )
-    //     ],
-    // ),
-    // );
+      ),
+    );
   }
 }
 
@@ -360,6 +113,7 @@ class DotIndicator extends Decoration {
   });
   final Color color;
   final double radius;
+
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return _DotPainter(
@@ -369,6 +123,7 @@ class DotIndicator extends Decoration {
     );
   }
 }
+
 class _DotPainter extends BoxPainter {
   _DotPainter({
     required this.color,
@@ -378,9 +133,11 @@ class _DotPainter extends BoxPainter {
     ..color = color
     ..style = PaintingStyle.fill,
         super(onChange);
+
   final Paint _paint;
   final Color color;
   final double radius;
+
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
@@ -392,4 +149,3 @@ class _DotPainter extends BoxPainter {
     );
   }
 }
-

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:salas_mobile/src/datasources/auth_local_datasource.dart';
 import 'package:salas_mobile/src/models/auth_response_model.dart';
 import 'package:salas_mobile/src/pages/auth/auth_page.dart';
+import 'package:salas_mobile/src/providers/theme_provider.dart';
 
 class UserInfoPage extends StatelessWidget {
   final AuthResponseModel auth;
@@ -11,7 +13,7 @@ class UserInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -21,59 +23,70 @@ class UserInfoPage extends StatelessWidget {
         ),
         centerTitle: true,
         title: const Text('Perfil', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xff277ebe),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.nights_stay , color: Colors.white),
-            onPressed: () {
-              // Aqui você vai implementar a mudança de tema depois
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return IconButton(
+                icon: Icon(
+                  themeProvider.isDarkMode(context) ? Icons.wb_sunny : Icons.nights_stay,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  themeProvider.toggleTheme();
+                },
+              );
             },
           ),
         ],
       ),
       body: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Espaço flexível no topo
             const Spacer(),
-
-            // Informações do usuário centralizadas
             Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: const Icon(Icons.person, size: 50, color: Colors.white),
                   ),
                   const SizedBox(height: 20),
                   Text(
                     auth.nome,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${auth.organizacao}',
-                    style: const TextStyle(fontSize: 16),
+                    auth.organizacao,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${auth.tipodeUsuario}',
-                    style: const TextStyle(fontSize: 16),
+                    auth.tipodeUsuario,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-
-            // Espaço flexível no meio
             const Spacer(),
-
-            // Botão de logout na parte inferior
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

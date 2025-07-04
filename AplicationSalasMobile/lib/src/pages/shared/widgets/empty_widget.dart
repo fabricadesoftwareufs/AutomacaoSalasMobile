@@ -1,19 +1,43 @@
-import 'package:empty_widget_pro/empty_widget_pro.dart';
 import 'package:flutter/material.dart';
 
-Widget Empty_Widget({required String titulo, required String descricao}){
-  return EmptyWidget(
-    packageImage: PackageImage.Image_3,
-    title: titulo,
-    subTitle: descricao,
-    titleTextStyle: const TextStyle(
-      fontSize: 17,
-      color: Color(0xff9da9c7),
-      fontWeight: FontWeight.w500,
-    ),
-    subtitleTextStyle: const TextStyle(
-      fontSize: 12,
-      color: Color(0xffabb8d6),
-    ),
-  );
+class Empty_Widget extends StatelessWidget {
+  final String titulo;
+  final String descricao;
+
+  const Empty_Widget({
+    super.key,
+    required this.titulo,
+    required this.descricao
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              titulo,
+              style: TextStyle(
+                fontSize: 22,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              descricao,
+              style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

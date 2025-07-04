@@ -33,21 +33,21 @@ class _CardInfoSalaState extends State<CardInfoSala> {
 
   MonitorarSalaRequestModel monitorarLuzesSala() {
     return monitoraSala = MonitorarSalaRequestModel(
-      id: widget.salasUsuario.monitoramentoLuzesModel.id,
-      equipamentoId: widget.salasUsuario.monitoramentoLuzesModel.idEquipamento,
-      estado: widget.salasUsuario.monitoramentoLuzesModel.estado,
-      salaId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoNavigationModel.sala,
-      salaParticula: widget.salasUsuario.monitoramentoLuzesModel.salaParticular
+        id: widget.salasUsuario.monitoramentoLuzesModel.id,
+        equipamentoId: widget.salasUsuario.monitoramentoLuzesModel.idEquipamento,
+        estado: widget.salasUsuario.monitoramentoLuzesModel.estado,
+        salaId: widget.salasUsuario.monitoramentoLuzesModel.equipamentoNavigationModel.sala,
+        salaParticula: widget.salasUsuario.monitoramentoLuzesModel.salaParticular
     );
   }
 
   monitorarCondicionadoresSala() {
     monitoraSala = MonitorarSalaRequestModel(
-      id: widget.salasUsuario.monitoramentoCondicionadoresModel.id,
-      equipamentoId: widget.salasUsuario.monitoramentoCondicionadoresModel.idEquipamento,
-      estado: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
-      salaId: widget.salasUsuario.monitoramentoCondicionadoresModel.equipamentoNavigationModel.sala,
-      salaParticula: widget.salasUsuario.monitoramentoCondicionadoresModel.salaParticular
+        id: widget.salasUsuario.monitoramentoCondicionadoresModel.id,
+        equipamentoId: widget.salasUsuario.monitoramentoCondicionadoresModel.idEquipamento,
+        estado: widget.salasUsuario.monitoramentoCondicionadoresModel.estado,
+        salaId: widget.salasUsuario.monitoramentoCondicionadoresModel.equipamentoNavigationModel.sala,
+        salaParticula: widget.salasUsuario.monitoramentoCondicionadoresModel.salaParticular
     );
   }
 
@@ -55,17 +55,23 @@ class _CardInfoSalaState extends State<CardInfoSala> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      shadowColor: Colors.blue.shade100,
+      shadowColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.grey.shade800
+          : Colors.blue.shade100,
       margin: const EdgeInsets.all(8),
+      color: Theme.of(context).cardColor,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-              stops: [0.02, 0.02],
-              colors: [Color(0xff277ebe), Colors.white]
+              stops: const [0.02, 0.02],
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).cardColor
+              ]
           ),
-          borderRadius: BorderRadius.all(Radius.circular(6)),
-          color: Color(0xffffffff),
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
+          color: Theme.of(context).cardColor,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,10 +80,22 @@ class _CardInfoSalaState extends State<CardInfoSala> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.salasUsuario.salaModel.titulo,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                Text(widget.salasUsuario.blocoModel.titulo,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17))
+                Text(
+                    widget.salasUsuario.salaModel.titulo,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                        color: Theme.of(context).colorScheme.onSurface
+                    )
+                ),
+                Text(
+                    widget.salasUsuario.blocoModel.titulo,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                        color: Theme.of(context).colorScheme.onSurface
+                    )
+                )
               ],
             ),
             SwitchWidget(
@@ -140,4 +158,3 @@ class _CardInfoSalaState extends State<CardInfoSala> {
     );
   }
 }
-

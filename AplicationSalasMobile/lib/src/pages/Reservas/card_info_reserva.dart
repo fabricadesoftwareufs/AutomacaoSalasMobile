@@ -77,17 +77,23 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      shadowColor: Colors.blue.shade100,
+      shadowColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.grey.shade800
+          : Colors.blue.shade100,
       margin: const EdgeInsets.all(8),
+      color: Theme.of(context).cardColor,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-              stops: [0.02, 0.02],
-              colors: [Color(0xff277ebe), Colors.white]
+              stops: const [0.02, 0.02],
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).cardColor
+              ]
           ),
-          borderRadius: BorderRadius.all(Radius.circular(6)),
-          color: Color(0xffffffff),
+          borderRadius: const BorderRadius.all(Radius.circular(6)),
+          color: Theme.of(context).cardColor,
         ),
         child: Column(
           children: [
@@ -100,9 +106,17 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(widget.reservasUsuario.sala.titulo,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Theme.of(context).colorScheme.onSurface
+                        )),
                     Text(widget.reservasUsuario.bloco.titulo,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Theme.of(context).colorScheme.onSurface
+                        )),
                   ],
                 ),
                 // Condicionalmente exibe os switches apenas quando a reserva não está cancelada
@@ -127,7 +141,7 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
               ],
             ),
             Divider(
-              color: Colors.black26,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
               thickness: 1,
             ),
             Row(
@@ -136,7 +150,10 @@ class _CardInfoReservaState extends State<CardInfoReserva> {
                 Text(
                     "${widget.reservasUsuario.horarioSala.horario_inicial.substring(0, 5)} h - ${widget.reservasUsuario
                         .horarioSala.horario_final.substring(0, 5)} h",
-                    style: const TextStyle(fontSize: 17)),
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Theme.of(context).colorScheme.onSurface
+                    )),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
