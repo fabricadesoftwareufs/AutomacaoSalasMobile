@@ -57,9 +57,9 @@ class _AuthPageState extends State<AuthPage> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/img/knuth.png',
+                        'assets/img/logo.png',
                         fit: BoxFit.fill,
-                        height: 180,
+                        width: 300,
                       ),
                       const SizedBox(height: 20),
                       TextFormFieldWidget(name: "CPF", controller: login, selecionado: (value) {}),
