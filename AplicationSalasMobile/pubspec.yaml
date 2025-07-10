@@ -45,8 +45,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/img/knuth.png
-    - assets/img/logo_provisoria.png
+    - assets/img/
 
 
   # fonts:
